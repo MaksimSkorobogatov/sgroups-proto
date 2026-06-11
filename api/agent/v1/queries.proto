@@ -1,0 +1,58 @@
+syntax = "proto3";
+
+package agent.v1;
+
+import "agent/v1/domains.proto";
+import "buf/validate/validate.proto";
+
+option go_package = "github.com/PRO-Robotech/sgroups-proto/pkg/api/agent/v1;agentv1";
+
+// SocketStatReq: request for socket statistics
+message SocketStatReq {
+  // List: request for listing socket statistics
+  message List {
+    // Selectors: list of selectors
+    repeated SockStat.Selectors selectors = 1 [(buf.validate.field) = {required: true}];
+  }
+  // Watch: request for watching socket statistics
+  message Watch {
+    // Selectors: list of selectors
+    repeated SockStat.Selectors selectors = 1 [(buf.validate.field) = {required: true}];
+  }
+}
+
+// SocketStatResp: response for socket statistics requests
+message SocketStatResp {
+  // List: response for ListSocketStatistics
+  message List {
+    // Stats: list of socket statistics
+    repeated SockStat stats = 1;
+  }
+  // Watch: response for WatchSocketStatistics
+  message Watch {
+    // Stats: list of socket statistics
+    repeated SockStat stats = 1;
+  }
+}
+
+// NftablesReq: request for nftables information
+message NftablesReq {
+  // List: request for listing nftables information
+  message List {}
+  // Watch: request for watching nftables information
+  message Watch {}
+}
+
+// NftablesResp: response for nftables information requests
+message NftablesResp {
+  // List: response for ListNftables
+  message List {
+    // Nftables: list of nftables information
+    repeated Nftables nftables = 1;
+  }
+  // Watch: response for WatchNftables
+  message Watch {
+    // Nftables: list of nftables information
+    repeated Nftables nftables = 1;
+  }
+}

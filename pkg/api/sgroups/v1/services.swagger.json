@@ -417,6 +417,160 @@
         ]
       }
     },
+    "/v1/hosts/nft/list": {
+      "post": {
+        "summary": "ListNft: list nftables information",
+        "description": "ListNft: List nftables information",
+        "operationId": "SGroupsHostsAPI_ListNft",
+        "responses": {
+          "200": {
+            "description": "A successful response.",
+            "schema": {
+              "$ref": "#/definitions/v1HostRespNftList"
+            }
+          },
+          "default": {
+            "description": "An unexpected error response.",
+            "schema": {
+              "$ref": "#/definitions/rpcStatus"
+            }
+          }
+        },
+        "parameters": [
+          {
+            "name": "body",
+            "in": "body",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/v1HostReqNftList"
+            }
+          }
+        ],
+        "tags": [
+          "Host"
+        ]
+      }
+    },
+    "/v1/hosts/nft/watch": {
+      "post": {
+        "summary": "WatchNft: watch nftables information",
+        "description": "WatchNft: Watch nftables information",
+        "operationId": "SGroupsHostsAPI_WatchNft",
+        "responses": {
+          "200": {
+            "description": "A successful response.(streaming responses)",
+            "schema": {
+              "type": "object",
+              "properties": {
+                "result": {
+                  "$ref": "#/definitions/v1HostRespNftWatch"
+                },
+                "error": {
+                  "$ref": "#/definitions/rpcStatus"
+                }
+              },
+              "title": "Stream result of v1HostRespNftWatch"
+            }
+          },
+          "default": {
+            "description": "An unexpected error response.",
+            "schema": {
+              "$ref": "#/definitions/rpcStatus"
+            }
+          }
+        },
+        "parameters": [
+          {
+            "name": "body",
+            "in": "body",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/v1HostReqNftWatch"
+            }
+          }
+        ],
+        "tags": [
+          "Host"
+        ]
+      }
+    },
+    "/v1/hosts/ss/list": {
+      "post": {
+        "summary": "ListSocketStatistics: list socket statistics",
+        "description": "ListSocketStatistics: List socket statistics",
+        "operationId": "SGroupsHostsAPI_ListSocketStatistics",
+        "responses": {
+          "200": {
+            "description": "A successful response.",
+            "schema": {
+              "$ref": "#/definitions/v1HostRespSocketStatisticsList"
+            }
+          },
+          "default": {
+            "description": "An unexpected error response.",
+            "schema": {
+              "$ref": "#/definitions/rpcStatus"
+            }
+          }
+        },
+        "parameters": [
+          {
+            "name": "body",
+            "in": "body",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/v1HostReqSocketStatisticsList"
+            }
+          }
+        ],
+        "tags": [
+          "Host"
+        ]
+      }
+    },
+    "/v1/hosts/ss/watch": {
+      "post": {
+        "summary": "WatchSocketStatistics: watch socket statistics",
+        "description": "WatchSocketStatistics: Watch socket statistics",
+        "operationId": "SGroupsHostsAPI_WatchSocketStatistics",
+        "responses": {
+          "200": {
+            "description": "A successful response.(streaming responses)",
+            "schema": {
+              "type": "object",
+              "properties": {
+                "result": {
+                  "$ref": "#/definitions/v1HostRespSocketStatisticsWatch"
+                },
+                "error": {
+                  "$ref": "#/definitions/rpcStatus"
+                }
+              },
+              "title": "Stream result of v1HostRespSocketStatisticsWatch"
+            }
+          },
+          "default": {
+            "description": "An unexpected error response.",
+            "schema": {
+              "$ref": "#/definitions/rpcStatus"
+            }
+          }
+        },
+        "parameters": [
+          {
+            "name": "body",
+            "in": "body",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/v1HostReqSocketStatisticsWatch"
+            }
+          }
+        ],
+        "tags": [
+          "Host"
+        ]
+      }
+    },
     "/v1/hosts/upd-ips": {
       "post": {
         "summary": "UpdIPs: Update host(s) IPs",
@@ -1554,6 +1708,21 @@
       },
       "title": "Local: local endpoint"
     },
+    "EndpointsPort": {
+      "type": "object",
+      "properties": {
+        "name": {
+          "type": "string",
+          "description": "Name: logical port name (e.g. \"api\", \"metrics\", \"health\")."
+        },
+        "port": {
+          "type": "integer",
+          "format": "int64",
+          "description": "Port: TCP/UDP port number."
+        }
+      },
+      "description": "Port: port with a logical name to identify what it serves."
+    },
     "EndpointsRemote": {
       "type": "object",
       "properties": {
@@ -1603,6 +1772,42 @@
       },
       "title": "Host: host to delete"
     },
+    "HostReqNftFieldSelector": {
+      "type": "object",
+      "properties": {
+        "name": {
+          "type": "string",
+          "title": "Name: resource name"
+        },
+        "namespace": {
+          "type": "string",
+          "title": "Namespace: resource namespace"
+        }
+      },
+      "title": "FieldSelector: resource field selector"
+    },
+    "HostReqSocketStatisticsFieldSelector": {
+      "type": "object",
+      "properties": {
+        "name": {
+          "type": "string",
+          "title": "Name: resource name"
+        },
+        "namespace": {
+          "type": "string",
+          "title": "Namespace: resource namespace"
+        },
+        "filters": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "$ref": "#/definitions/v1SockStatSelectors"
+          },
+          "title": "Filters: socket statistics filters"
+        }
+      },
+      "title": "FieldSelector: resource field selector"
+    },
     "HostReqUpdIPsHost": {
       "type": "object",
       "properties": {
@@ -1623,6 +1828,10 @@
         "IPs": {
           "$ref": "#/definitions/commonIPs",
           "title": "IPs: list of IPs to update in the host"
+        },
+        "endpoints": {
+          "$ref": "#/definitions/HostSpecEndpoints",
+          "title": "Endpoints: host endpoints"
         }
       },
       "title": "Spec: host specification for IP update",
@@ -1651,6 +1860,68 @@
         }
       },
       "title": "HostExt: extended host information"
+    },
+    "HostRespNftHost": {
+      "type": "object",
+      "properties": {
+        "name": {
+          "type": "string",
+          "title": "Name: host name"
+        },
+        "namespace": {
+          "type": "string",
+          "title": "Namespace: host namespace"
+        },
+        "nft": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "$ref": "#/definitions/v1Nftables"
+          },
+          "title": "Nft: list of nftables information for the host"
+        }
+      },
+      "title": "Host: host with nftables information"
+    },
+    "HostRespSocketStatisticsHost": {
+      "type": "object",
+      "properties": {
+        "name": {
+          "type": "string",
+          "title": "Name: host name"
+        },
+        "namespace": {
+          "type": "string",
+          "title": "Namespace: host namespace"
+        },
+        "stats": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "$ref": "#/definitions/v1SockStat"
+          },
+          "title": "Stats: list of socket statistics for the host"
+        }
+      },
+      "title": "Host: host with socket statistics"
+    },
+    "HostSpecEndpoints": {
+      "type": "object",
+      "properties": {
+        "address": {
+          "type": "string",
+          "description": "Address: endpoint address is reachable at. If empty, the server\nfalls back to the peer address observed on the gRPC connection."
+        },
+        "ports": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "$ref": "#/definitions/EndpointsPort"
+          },
+          "description": "Ports: list of ports."
+        }
+      },
+      "title": "Endpoints: represents host endpoints"
     },
     "NamespaceReqDeleteMetadataScope": {
       "type": "object",
@@ -2244,6 +2515,11 @@
           "$ref": "#/definitions/SpecMetaInfo",
           "title": "MetaInfo: host meta information",
           "readOnly": true
+        },
+        "endpoints": {
+          "$ref": "#/definitions/HostSpecEndpoints",
+          "title": "Endpoints: endpoints published by the host",
+          "readOnly": true
         }
       },
       "title": "Spec: resource specification"
@@ -2478,6 +2754,27 @@
       },
       "title": "Spec: resource specification"
     },
+    "v1ConnState": {
+      "type": "string",
+      "enum": [
+        "CONN_UNDEF",
+        "ESTABLISHED",
+        "SYN_SENT",
+        "SYN_RECV",
+        "FIN_WAIT1",
+        "FIN_WAIT2",
+        "TIME_WAIT",
+        "CLOSE",
+        "CLOSE_WAIT",
+        "LAST_ACK",
+        "LISTEN",
+        "CLOSING",
+        "NEW_SYN_RECV"
+      ],
+      "default": "CONN_UNDEF",
+      "description": "- CONN_UNDEF: CONN_UNDEF: undefined connection state\n - ESTABLISHED: ESTABLISHED: connection is established\n - SYN_SENT: SYN_SENT: connection is in SYN_SENT state\n - SYN_RECV: SYN_RECV: connection is in SYN_RECV state\n - FIN_WAIT1: FIN_WAIT1: connection is in FIN_WAIT1 state\n - FIN_WAIT2: FIN_WAIT2: connection is in FIN_WAIT2 state\n - TIME_WAIT: TIME_WAIT: connection is in TIME_WAIT state\n - CLOSE: CLOSE: connection is closed\n - CLOSE_WAIT: CLOSE_WAIT: connection is in CLOSE_WAIT state\n - LAST_ACK: LAST_ACK: connection is in LAST_ACK state\n - LISTEN: LISTEN: connection is in LISTEN state\n - CLOSING: CLOSING: connection is in CLOSING state\n - NEW_SYN_RECV: NEW_SYN_RECV: connection is in NEW_SYN_RECV state",
+      "title": "ConnState: represents connection state"
+    },
     "v1HostBindingReqDelete": {
       "type": "object",
       "properties": {
@@ -2690,6 +2987,62 @@
       },
       "title": "List: request to list hosts"
     },
+    "v1HostReqNftList": {
+      "type": "object",
+      "properties": {
+        "selectors": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "$ref": "#/definitions/HostReqNftFieldSelector"
+          },
+          "title": "Selectors: list of selectors"
+        }
+      },
+      "title": "List: request to list nftables information"
+    },
+    "v1HostReqNftWatch": {
+      "type": "object",
+      "properties": {
+        "selectors": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "$ref": "#/definitions/HostReqNftFieldSelector"
+          },
+          "title": "Selectors: list of selectors"
+        }
+      },
+      "title": "Watch: request to watch nftables information"
+    },
+    "v1HostReqSocketStatisticsList": {
+      "type": "object",
+      "properties": {
+        "selectors": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "$ref": "#/definitions/HostReqSocketStatisticsFieldSelector"
+          },
+          "title": "Selectors: list of selectors"
+        }
+      },
+      "title": "List: request to list socket statistics"
+    },
+    "v1HostReqSocketStatisticsWatch": {
+      "type": "object",
+      "properties": {
+        "selectors": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "$ref": "#/definitions/HostReqSocketStatisticsFieldSelector"
+          },
+          "title": "Selectors: list of selectors"
+        }
+      },
+      "title": "Watch: request to watch socket statistics"
+    },
     "v1HostReqUpdIPs": {
       "type": "object",
       "properties": {
@@ -2776,6 +3129,62 @@
         }
       },
       "title": "List: response for list hosts"
+    },
+    "v1HostRespNftList": {
+      "type": "object",
+      "properties": {
+        "hosts": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "$ref": "#/definitions/HostRespNftHost"
+          },
+          "title": "Hosts: list of hosts with nftables information"
+        }
+      },
+      "title": "List: response for ListNft"
+    },
+    "v1HostRespNftWatch": {
+      "type": "object",
+      "properties": {
+        "hosts": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "$ref": "#/definitions/HostRespNftHost"
+          },
+          "title": "Hosts: list of hosts with nftables information"
+        }
+      },
+      "title": "Watch: response for WatchNft"
+    },
+    "v1HostRespSocketStatisticsList": {
+      "type": "object",
+      "properties": {
+        "hosts": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "$ref": "#/definitions/HostRespSocketStatisticsHost"
+          },
+          "title": "Hosts: list of hosts with socket statistics"
+        }
+      },
+      "title": "List: response for ListSocketStatistics"
+    },
+    "v1HostRespSocketStatisticsWatch": {
+      "type": "object",
+      "properties": {
+        "hosts": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "$ref": "#/definitions/HostRespSocketStatisticsHost"
+          },
+          "title": "Hosts: list of hosts with socket statistics"
+        }
+      },
+      "title": "Watch: response for WatchSocketStatistics"
     },
     "v1HostRespUpdIPs": {
       "type": "object",
@@ -3289,6 +3698,48 @@
         }
       },
       "title": "Spec: resource specification"
+    },
+    "v1Nftables": {
+      "type": "object",
+      "properties": {
+        "text": {
+          "type": "string",
+          "title": "Text: nftables information in text format"
+        },
+        "json": {
+          "type": "string",
+          "title": "Json: nftables information in json format"
+        }
+      },
+      "title": "Nftables: represents nftables information"
+    },
+    "v1ProcessInfo": {
+      "type": "object",
+      "properties": {
+        "pid": {
+          "type": "integer",
+          "format": "int32",
+          "title": "Pid: process ID"
+        },
+        "comm": {
+          "type": "string",
+          "title": "Comm: process command name"
+        },
+        "cmdLine": {
+          "type": "string",
+          "title": "CmdLine: process command line"
+        },
+        "exe": {
+          "type": "string",
+          "title": "Exe: process executable path"
+        },
+        "fd": {
+          "type": "integer",
+          "format": "int32",
+          "title": "Fd: process file descriptor associated with the socket"
+        }
+      },
+      "title": "ProcessInfo: represents process information"
     },
     "v1RuleReqDelete": {
       "type": "object",
@@ -3805,6 +4256,113 @@
         }
       },
       "title": "Spec: resource specification"
+    },
+    "v1SockStat": {
+      "type": "object",
+      "properties": {
+        "protocol": {
+          "type": "string",
+          "title": "Protocol: socket protocol"
+        },
+        "family": {
+          "$ref": "#/definitions/commonIpAddrFamily",
+          "title": "Family: socket address family"
+        },
+        "state": {
+          "$ref": "#/definitions/v1ConnState",
+          "title": "State: connection state"
+        },
+        "localAddr": {
+          "type": "string",
+          "title": "LocalAddr: local ip address"
+        },
+        "localPort": {
+          "type": "integer",
+          "format": "int32",
+          "title": "LocalPort: local port"
+        },
+        "remoteAddr": {
+          "type": "string",
+          "title": "RemoteAddr: remote ip address"
+        },
+        "remotePort": {
+          "type": "integer",
+          "format": "int32",
+          "title": "RemotePort: remote port"
+        },
+        "ifname": {
+          "type": "string",
+          "title": "Ifname: interface name"
+        },
+        "inode": {
+          "type": "string",
+          "format": "int64",
+          "title": "Inode: socket inode number"
+        },
+        "processes": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "$ref": "#/definitions/v1ProcessInfo"
+          },
+          "title": "Processes: associated processes"
+        }
+      },
+      "title": "SockStat: represents socket statistics"
+    },
+    "v1SockStatSelectors": {
+      "type": "object",
+      "properties": {
+        "protocol": {
+          "type": "string",
+          "title": "Protocol: socket protocol"
+        },
+        "family": {
+          "$ref": "#/definitions/commonIpAddrFamily",
+          "title": "Family: socket address family"
+        },
+        "state": {
+          "$ref": "#/definitions/v1ConnState",
+          "title": "State: connection state"
+        },
+        "localAddr": {
+          "type": "string",
+          "title": "LocalAddr: local ip address"
+        },
+        "localPort": {
+          "type": "integer",
+          "format": "int32",
+          "title": "LocalPort: local port"
+        },
+        "remoteAddr": {
+          "type": "string",
+          "title": "RemoteAddr: remote ip address"
+        },
+        "remotePort": {
+          "type": "integer",
+          "format": "int32",
+          "title": "RemotePort: remote port"
+        },
+        "ifname": {
+          "type": "string",
+          "title": "Ifname: interface name"
+        },
+        "inode": {
+          "type": "string",
+          "format": "int64",
+          "title": "Inode: socket inode number"
+        },
+        "pid": {
+          "type": "integer",
+          "format": "int32",
+          "title": "Pid: process ID"
+        },
+        "comm": {
+          "type": "string",
+          "title": "Comm: process command name"
+        }
+      },
+      "title": "Selectors: request to select socket statistics"
     },
     "v1SyncStatusResp": {
       "type": "object",
