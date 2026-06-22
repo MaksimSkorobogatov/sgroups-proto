@@ -100,6 +100,9 @@ const (
 	// SGroupsHostsAPIUpdMetaInfoProcedure is the fully-qualified name of the SGroupsHostsAPI's
 	// UpdMetaInfo RPC.
 	SGroupsHostsAPIUpdMetaInfoProcedure = "/sgroups.v1.SGroupsHostsAPI/UpdMetaInfo"
+	// SGroupsHostsAPIUpdHealthStatusProcedure is the fully-qualified name of the SGroupsHostsAPI's
+	// UpdHealthStatus RPC.
+	SGroupsHostsAPIUpdHealthStatusProcedure = "/sgroups.v1.SGroupsHostsAPI/UpdHealthStatus"
 	// SGroupsHostsAPIListSocketStatisticsProcedure is the fully-qualified name of the SGroupsHostsAPI's
 	// ListSocketStatistics RPC.
 	SGroupsHostsAPIListSocketStatisticsProcedure = "/sgroups.v1.SGroupsHostsAPI/ListSocketStatistics"
@@ -655,6 +658,8 @@ type SGroupsHostsAPIClient interface {
 	UpdIPs(context.Context, *connect.Request[v1.HostReq_UpdIPs]) (*connect.Response[v1.HostResp_UpdIPs], error)
 	// UpdMetaInfo: Update host(s) meta information
 	UpdMetaInfo(context.Context, *connect.Request[v1.HostReq_UpdMetaInfo]) (*connect.Response[v1.HostResp_UpdMetaInfo], error)
+	// UpdHealthStatus: Update host(s) health status
+	UpdHealthStatus(context.Context, *connect.Request[v1.HostReq_UpdHealthStatus]) (*connect.Response[v1.HostResp_UpdHealthStatus], error)
 	// ListSocketStatistics: list socket statistics
 	ListSocketStatistics(context.Context, *connect.Request[v1.HostReq_SocketStatistics_List]) (*connect.Response[v1.HostResp_SocketStatistics_List], error)
 	// WatchSocketStatistics: watch socket statistics
@@ -712,6 +717,12 @@ func NewSGroupsHostsAPIClient(httpClient connect.HTTPClient, baseURL string, opt
 			connect.WithSchema(sGroupsHostsAPIMethods.ByName("UpdMetaInfo")),
 			connect.WithClientOptions(opts...),
 		),
+		updHealthStatus: connect.NewClient[v1.HostReq_UpdHealthStatus, v1.HostResp_UpdHealthStatus](
+			httpClient,
+			baseURL+SGroupsHostsAPIUpdHealthStatusProcedure,
+			connect.WithSchema(sGroupsHostsAPIMethods.ByName("UpdHealthStatus")),
+			connect.WithClientOptions(opts...),
+		),
 		listSocketStatistics: connect.NewClient[v1.HostReq_SocketStatistics_List, v1.HostResp_SocketStatistics_List](
 			httpClient,
 			baseURL+SGroupsHostsAPIListSocketStatisticsProcedure,
@@ -747,6 +758,7 @@ type sGroupsHostsAPIClient struct {
 	watch                 *connect.Client[v1.HostReq_Watch, v1.HostResp_Watch]
 	updIPs                *connect.Client[v1.HostReq_UpdIPs, v1.HostResp_UpdIPs]
 	updMetaInfo           *connect.Client[v1.HostReq_UpdMetaInfo, v1.HostResp_UpdMetaInfo]
+	updHealthStatus       *connect.Client[v1.HostReq_UpdHealthStatus, v1.HostResp_UpdHealthStatus]
 	listSocketStatistics  *connect.Client[v1.HostReq_SocketStatistics_List, v1.HostResp_SocketStatistics_List]
 	watchSocketStatistics *connect.Client[v1.HostReq_SocketStatistics_Watch, v1.HostResp_SocketStatistics_Watch]
 	listNft               *connect.Client[v1.HostReq_Nft_List, v1.HostResp_Nft_List]
@@ -783,6 +795,11 @@ func (c *sGroupsHostsAPIClient) UpdMetaInfo(ctx context.Context, req *connect.Re
 	return c.updMetaInfo.CallUnary(ctx, req)
 }
 
+// UpdHealthStatus calls sgroups.v1.SGroupsHostsAPI.UpdHealthStatus.
+func (c *sGroupsHostsAPIClient) UpdHealthStatus(ctx context.Context, req *connect.Request[v1.HostReq_UpdHealthStatus]) (*connect.Response[v1.HostResp_UpdHealthStatus], error) {
+	return c.updHealthStatus.CallUnary(ctx, req)
+}
+
 // ListSocketStatistics calls sgroups.v1.SGroupsHostsAPI.ListSocketStatistics.
 func (c *sGroupsHostsAPIClient) ListSocketStatistics(ctx context.Context, req *connect.Request[v1.HostReq_SocketStatistics_List]) (*connect.Response[v1.HostResp_SocketStatistics_List], error) {
 	return c.listSocketStatistics.CallUnary(ctx, req)
@@ -817,6 +834,8 @@ type SGroupsHostsAPIHandler interface {
 	UpdIPs(context.Context, *connect.Request[v1.HostReq_UpdIPs]) (*connect.Response[v1.HostResp_UpdIPs], error)
 	// UpdMetaInfo: Update host(s) meta information
 	UpdMetaInfo(context.Context, *connect.Request[v1.HostReq_UpdMetaInfo]) (*connect.Response[v1.HostResp_UpdMetaInfo], error)
+	// UpdHealthStatus: Update host(s) health status
+	UpdHealthStatus(context.Context, *connect.Request[v1.HostReq_UpdHealthStatus]) (*connect.Response[v1.HostResp_UpdHealthStatus], error)
 	// ListSocketStatistics: list socket statistics
 	ListSocketStatistics(context.Context, *connect.Request[v1.HostReq_SocketStatistics_List]) (*connect.Response[v1.HostResp_SocketStatistics_List], error)
 	// WatchSocketStatistics: watch socket statistics
@@ -870,6 +889,12 @@ func NewSGroupsHostsAPIHandler(svc SGroupsHostsAPIHandler, opts ...connect.Handl
 		connect.WithSchema(sGroupsHostsAPIMethods.ByName("UpdMetaInfo")),
 		connect.WithHandlerOptions(opts...),
 	)
+	sGroupsHostsAPIUpdHealthStatusHandler := connect.NewUnaryHandler(
+		SGroupsHostsAPIUpdHealthStatusProcedure,
+		svc.UpdHealthStatus,
+		connect.WithSchema(sGroupsHostsAPIMethods.ByName("UpdHealthStatus")),
+		connect.WithHandlerOptions(opts...),
+	)
 	sGroupsHostsAPIListSocketStatisticsHandler := connect.NewUnaryHandler(
 		SGroupsHostsAPIListSocketStatisticsProcedure,
 		svc.ListSocketStatistics,
@@ -908,6 +933,8 @@ func NewSGroupsHostsAPIHandler(svc SGroupsHostsAPIHandler, opts ...connect.Handl
 			sGroupsHostsAPIUpdIPsHandler.ServeHTTP(w, r)
 		case SGroupsHostsAPIUpdMetaInfoProcedure:
 			sGroupsHostsAPIUpdMetaInfoHandler.ServeHTTP(w, r)
+		case SGroupsHostsAPIUpdHealthStatusProcedure:
+			sGroupsHostsAPIUpdHealthStatusHandler.ServeHTTP(w, r)
 		case SGroupsHostsAPIListSocketStatisticsProcedure:
 			sGroupsHostsAPIListSocketStatisticsHandler.ServeHTTP(w, r)
 		case SGroupsHostsAPIWatchSocketStatisticsProcedure:
@@ -947,6 +974,10 @@ func (UnimplementedSGroupsHostsAPIHandler) UpdIPs(context.Context, *connect.Requ
 
 func (UnimplementedSGroupsHostsAPIHandler) UpdMetaInfo(context.Context, *connect.Request[v1.HostReq_UpdMetaInfo]) (*connect.Response[v1.HostResp_UpdMetaInfo], error) {
 	return nil, connect.NewError(connect.CodeUnimplemented, errors.New("sgroups.v1.SGroupsHostsAPI.UpdMetaInfo is not implemented"))
+}
+
+func (UnimplementedSGroupsHostsAPIHandler) UpdHealthStatus(context.Context, *connect.Request[v1.HostReq_UpdHealthStatus]) (*connect.Response[v1.HostResp_UpdHealthStatus], error) {
+	return nil, connect.NewError(connect.CodeUnimplemented, errors.New("sgroups.v1.SGroupsHostsAPI.UpdHealthStatus is not implemented"))
 }
 
 func (UnimplementedSGroupsHostsAPIHandler) ListSocketStatistics(context.Context, *connect.Request[v1.HostReq_SocketStatistics_List]) (*connect.Response[v1.HostResp_SocketStatistics_List], error) {

@@ -723,6 +723,7 @@ const (
 	SGroupsHostsAPI_Watch_FullMethodName                 = "/sgroups.v1.SGroupsHostsAPI/Watch"
 	SGroupsHostsAPI_UpdIPs_FullMethodName                = "/sgroups.v1.SGroupsHostsAPI/UpdIPs"
 	SGroupsHostsAPI_UpdMetaInfo_FullMethodName           = "/sgroups.v1.SGroupsHostsAPI/UpdMetaInfo"
+	SGroupsHostsAPI_UpdHealthStatus_FullMethodName       = "/sgroups.v1.SGroupsHostsAPI/UpdHealthStatus"
 	SGroupsHostsAPI_ListSocketStatistics_FullMethodName  = "/sgroups.v1.SGroupsHostsAPI/ListSocketStatistics"
 	SGroupsHostsAPI_WatchSocketStatistics_FullMethodName = "/sgroups.v1.SGroupsHostsAPI/WatchSocketStatistics"
 	SGroupsHostsAPI_ListNft_FullMethodName               = "/sgroups.v1.SGroupsHostsAPI/ListNft"
@@ -747,6 +748,8 @@ type SGroupsHostsAPIClient interface {
 	UpdIPs(ctx context.Context, in *HostReq_UpdIPs, opts ...grpc.CallOption) (*HostResp_UpdIPs, error)
 	// UpdMetaInfo: Update host(s) meta information
 	UpdMetaInfo(ctx context.Context, in *HostReq_UpdMetaInfo, opts ...grpc.CallOption) (*HostResp_UpdMetaInfo, error)
+	// UpdHealthStatus: Update host(s) health status
+	UpdHealthStatus(ctx context.Context, in *HostReq_UpdHealthStatus, opts ...grpc.CallOption) (*HostResp_UpdHealthStatus, error)
 	// ListSocketStatistics: list socket statistics
 	ListSocketStatistics(ctx context.Context, in *HostReq_SocketStatistics_List, opts ...grpc.CallOption) (*HostResp_SocketStatistics_List, error)
 	// WatchSocketStatistics: watch socket statistics
@@ -834,6 +837,16 @@ func (c *sGroupsHostsAPIClient) UpdMetaInfo(ctx context.Context, in *HostReq_Upd
 	return out, nil
 }
 
+func (c *sGroupsHostsAPIClient) UpdHealthStatus(ctx context.Context, in *HostReq_UpdHealthStatus, opts ...grpc.CallOption) (*HostResp_UpdHealthStatus, error) {
+	cOpts := append([]grpc.CallOption{grpc.StaticMethod()}, opts...)
+	out := new(HostResp_UpdHealthStatus)
+	err := c.cc.Invoke(ctx, SGroupsHostsAPI_UpdHealthStatus_FullMethodName, in, out, cOpts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
 func (c *sGroupsHostsAPIClient) ListSocketStatistics(ctx context.Context, in *HostReq_SocketStatistics_List, opts ...grpc.CallOption) (*HostResp_SocketStatistics_List, error) {
 	cOpts := append([]grpc.CallOption{grpc.StaticMethod()}, opts...)
 	out := new(HostResp_SocketStatistics_List)
@@ -910,6 +923,8 @@ type SGroupsHostsAPIServer interface {
 	UpdIPs(context.Context, *HostReq_UpdIPs) (*HostResp_UpdIPs, error)
 	// UpdMetaInfo: Update host(s) meta information
 	UpdMetaInfo(context.Context, *HostReq_UpdMetaInfo) (*HostResp_UpdMetaInfo, error)
+	// UpdHealthStatus: Update host(s) health status
+	UpdHealthStatus(context.Context, *HostReq_UpdHealthStatus) (*HostResp_UpdHealthStatus, error)
 	// ListSocketStatistics: list socket statistics
 	ListSocketStatistics(context.Context, *HostReq_SocketStatistics_List) (*HostResp_SocketStatistics_List, error)
 	// WatchSocketStatistics: watch socket statistics
@@ -945,6 +960,9 @@ func (UnimplementedSGroupsHostsAPIServer) UpdIPs(context.Context, *HostReq_UpdIP
 }
 func (UnimplementedSGroupsHostsAPIServer) UpdMetaInfo(context.Context, *HostReq_UpdMetaInfo) (*HostResp_UpdMetaInfo, error) {
 	return nil, status.Error(codes.Unimplemented, "method UpdMetaInfo not implemented")
+}
+func (UnimplementedSGroupsHostsAPIServer) UpdHealthStatus(context.Context, *HostReq_UpdHealthStatus) (*HostResp_UpdHealthStatus, error) {
+	return nil, status.Error(codes.Unimplemented, "method UpdHealthStatus not implemented")
 }
 func (UnimplementedSGroupsHostsAPIServer) ListSocketStatistics(context.Context, *HostReq_SocketStatistics_List) (*HostResp_SocketStatistics_List, error) {
 	return nil, status.Error(codes.Unimplemented, "method ListSocketStatistics not implemented")
@@ -1080,6 +1098,24 @@ func _SGroupsHostsAPI_UpdMetaInfo_Handler(srv interface{}, ctx context.Context, 
 	return interceptor(ctx, in, info, handler)
 }
 
+func _SGroupsHostsAPI_UpdHealthStatus_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(HostReq_UpdHealthStatus)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(SGroupsHostsAPIServer).UpdHealthStatus(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: SGroupsHostsAPI_UpdHealthStatus_FullMethodName,
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(SGroupsHostsAPIServer).UpdHealthStatus(ctx, req.(*HostReq_UpdHealthStatus))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
 func _SGroupsHostsAPI_ListSocketStatistics_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
 	in := new(HostReq_SocketStatistics_List)
 	if err := dec(in); err != nil {
@@ -1164,6 +1200,10 @@ var SGroupsHostsAPI_ServiceDesc = grpc.ServiceDesc{
 		{
 			MethodName: "UpdMetaInfo",
 			Handler:    _SGroupsHostsAPI_UpdMetaInfo_Handler,
+		},
+		{
+			MethodName: "UpdHealthStatus",
+			Handler:    _SGroupsHostsAPI_UpdHealthStatus_Handler,
 		},
 		{
 			MethodName: "ListSocketStatistics",

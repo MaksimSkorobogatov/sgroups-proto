@@ -571,6 +571,40 @@
         ]
       }
     },
+    "/v1/hosts/upd-health-status": {
+      "post": {
+        "summary": "UpdHealthStatus: Update host(s) health status",
+        "description": "UpdHealthStatus: Update host(s) health status",
+        "operationId": "SGroupsHostsAPI_UpdHealthStatus",
+        "responses": {
+          "200": {
+            "description": "A successful response.",
+            "schema": {
+              "$ref": "#/definitions/v1HostRespUpdHealthStatus"
+            }
+          },
+          "default": {
+            "description": "An unexpected error response.",
+            "schema": {
+              "$ref": "#/definitions/rpcStatus"
+            }
+          }
+        },
+        "parameters": [
+          {
+            "name": "body",
+            "in": "body",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/v1HostReqUpdHealthStatus"
+            }
+          }
+        ],
+        "tags": [
+          "Host"
+        ]
+      }
+    },
     "/v1/hosts/upd-ips": {
       "post": {
         "summary": "UpdIPs: Update host(s) IPs",
@@ -1808,6 +1842,30 @@
       },
       "title": "FieldSelector: resource field selector"
     },
+    "HostReqUpdHealthStatusHost": {
+      "type": "object",
+      "properties": {
+        "metadata": {
+          "$ref": "#/definitions/commonMetadataScope",
+          "title": "Metadata: metadata for scoping"
+        },
+        "spec": {
+          "$ref": "#/definitions/HostReqUpdHealthStatusHostSpec",
+          "title": "Spec: host specification for health status update"
+        }
+      },
+      "title": "Host: host to update health status"
+    },
+    "HostReqUpdHealthStatusHostSpec": {
+      "type": "object",
+      "properties": {
+        "healthy": {
+          "type": "boolean",
+          "title": "Healthy: whether the host is healthy"
+        }
+      },
+      "title": "Spec: host specification for health status update"
+    },
     "HostReqUpdIPsHost": {
       "type": "object",
       "properties": {
@@ -2520,6 +2578,11 @@
           "$ref": "#/definitions/HostSpecEndpoints",
           "title": "Endpoints: endpoints published by the host",
           "readOnly": true
+        },
+        "healthy": {
+          "type": "boolean",
+          "title": "HealthStatus: health check status (output-only, populated by healthcheck controller)",
+          "readOnly": true
         }
       },
       "title": "Spec: resource specification"
@@ -3043,6 +3106,23 @@
       },
       "title": "Watch: request to watch socket statistics"
     },
+    "v1HostReqUpdHealthStatus": {
+      "type": "object",
+      "properties": {
+        "hosts": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "$ref": "#/definitions/HostReqUpdHealthStatusHost"
+          },
+          "title": "Hosts: list of hosts to update health status"
+        }
+      },
+      "title": "UpdHealthStatus: request to update host health status",
+      "required": [
+        "hosts"
+      ]
+    },
     "v1HostReqUpdIPs": {
       "type": "object",
       "properties": {
@@ -3185,6 +3265,20 @@
         }
       },
       "title": "Watch: response for WatchSocketStatistics"
+    },
+    "v1HostRespUpdHealthStatus": {
+      "type": "object",
+      "properties": {
+        "hosts": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "$ref": "#/definitions/sgroupsV1Host"
+          },
+          "title": "Hosts: list of hosts"
+        }
+      },
+      "title": "UpdHealthStatus: response for update host health status"
     },
     "v1HostRespUpdIPs": {
       "type": "object",

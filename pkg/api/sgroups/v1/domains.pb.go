@@ -762,7 +762,9 @@ type Host_Spec struct {
 	// MetaInfo: host meta information
 	MetaInfo *Host_Spec_MetaInfo `protobuf:"bytes,5,opt,name=meta_info,json=metaInfo,proto3" json:"meta_info,omitempty"`
 	// Endpoints: endpoints published by the host
-	Endpoints     *Host_Spec_Endpoints `protobuf:"bytes,6,opt,name=endpoints,proto3" json:"endpoints,omitempty"`
+	Endpoints *Host_Spec_Endpoints `protobuf:"bytes,6,opt,name=endpoints,proto3" json:"endpoints,omitempty"`
+	// HealthStatus: health check status (output-only, populated by healthcheck controller)
+	Healthy       bool `protobuf:"varint,7,opt,name=healthy,proto3" json:"healthy,omitempty"`
 	unknownFields protoimpl.UnknownFields
 	sizeCache     protoimpl.SizeCache
 }
@@ -837,6 +839,13 @@ func (x *Host_Spec) GetEndpoints() *Host_Spec_Endpoints {
 		return x.Endpoints
 	}
 	return nil
+}
+
+func (x *Host_Spec) GetHealthy() bool {
+	if x != nil {
+		return x.Healthy
+	}
+	return false
 }
 
 // MetaInfo: represents host meta information
@@ -1490,17 +1499,18 @@ const file_sgroups_v1_domains_proto_rawDesc = "" +
 	"\fdisplay_name\x18\x01 \x01(\tB\a\xbaH\x04r\x02\x18?R\vdisplayName\x12\x18\n" +
 	"\acomment\x18\x02 \x01(\tR\acomment\x12 \n" +
 	"\vdescription\x18\x03 \x01(\tR\vdescription\x12\x8d\x01\n" +
-	"\x04cidr\x18\x04 \x01(\tBy\xbaHv\xba\x01F\x12/must not contain leading or trailing whitespace\x1a\x13this == this.trim()\xba\x01&\x12\x10must contain '/'\x1a\x12this.contains('/')r\x02\x10\x01R\x04CIDR\"\x94\x06\n" +
+	"\x04cidr\x18\x04 \x01(\tBy\xbaHv\xba\x01F\x12/must not contain leading or trailing whitespace\x1a\x13this == this.trim()\xba\x01&\x12\x10must contain '/'\x1a\x12this.contains('/')r\x02\x10\x01R\x04CIDR\"\xb8\x06\n" +
 	"\x04Host\x124\n" +
 	"\bmetadata\x18\x01 \x01(\v2\x10.common.MetadataB\x06\xbaH\x03\xc8\x01\x01R\bmetadata\x121\n" +
-	"\x04spec\x18\x02 \x01(\v2\x15.sgroups.v1.Host.SpecB\x06\xbaH\x03\xc8\x01\x01R\x04spec\x1a\xa2\x05\n" +
+	"\x04spec\x18\x02 \x01(\v2\x15.sgroups.v1.Host.SpecB\x06\xbaH\x03\xc8\x01\x01R\x04spec\x1a\xc6\x05\n" +
 	"\x04Spec\x12*\n" +
 	"\fdisplay_name\x18\x01 \x01(\tB\a\xbaH\x04r\x02\x18?R\vdisplayName\x12\x18\n" +
 	"\acomment\x18\x02 \x01(\tR\acomment\x12 \n" +
 	"\vdescription\x18\x03 \x01(\tR\vdescription\x12'\n" +
 	"\x03ips\x18\x04 \x01(\v2\v.common.IPsB\b\x92A\x02@\x01\xe0A\x03R\x03IPs\x12E\n" +
 	"\tmeta_info\x18\x05 \x01(\v2\x1e.sgroups.v1.Host.Spec.MetaInfoB\b\x92A\x02@\x01\xe0A\x03R\bmetaInfo\x12G\n" +
-	"\tendpoints\x18\x06 \x01(\v2\x1f.sgroups.v1.Host.Spec.EndpointsB\b\x92A\x02@\x01\xe0A\x03R\tendpoints\x1a\xce\x01\n" +
+	"\tendpoints\x18\x06 \x01(\v2\x1f.sgroups.v1.Host.Spec.EndpointsB\b\x92A\x02@\x01\xe0A\x03R\tendpoints\x12\"\n" +
+	"\ahealthy\x18\a \x01(\bB\b\x92A\x02@\x01\xe0A\x03R\ahealthy\x1a\xce\x01\n" +
 	"\bMetaInfo\x12\x1b\n" +
 	"\thost_name\x18\x01 \x01(\tR\bhostName\x12\x0e\n" +
 	"\x02os\x18\x02 \x01(\tR\x02os\x12\x1a\n" +

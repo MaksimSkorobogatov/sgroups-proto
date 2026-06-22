@@ -157,6 +157,11 @@ message Host {
       (google.api.field_behavior) = OUTPUT_ONLY,
       (grpc.gateway.protoc_gen_openapiv2.options.openapiv2_field) = {read_only: true}
     ];
+    // HealthStatus: health check status (output-only, populated by healthcheck controller)
+    bool healthy = 7 [
+      (google.api.field_behavior) = OUTPUT_ONLY,
+      (grpc.gateway.protoc_gen_openapiv2.options.openapiv2_field) = {read_only: true}
+    ];
   }
   // Metadata: host metadata
   common.Metadata metadata = 1 [(buf.validate.field) = {required: true}];

@@ -362,6 +362,33 @@ message HostReq {
     ];
   }
 
+  // UpdHealthStatus: request to update host health status
+  message UpdHealthStatus {
+    // Host: host to update health status
+    message Host {
+      // Metadata: metadata for scoping
+      common.MetadataScope metadata = 1 [(buf.validate.field) = {
+        required: true
+        cel: {
+          expression: "this.uid != '' || (this.name != '' && this.namespace != '')"
+          message: "either uid must be set, or both name and namespace must be set"
+        }
+      }];
+      // Spec: host specification for health status update
+      message Spec {
+        // Healthy: whether the host is healthy
+        bool healthy = 1;
+      }
+      // Spec: host specification for health status update
+      Spec spec = 2 [(buf.validate.field) = {required: true}];
+    }
+    // Hosts: list of hosts to update health status
+    repeated Host hosts = 1 [
+      (google.api.field_behavior) = REQUIRED,
+      (buf.validate.field).repeated.min_items = 1
+    ];
+  }
+
   // SocketStatistics: request to query socket statistics in hosts
   message SocketStatistics {
     // FieldSelector: resource field selector
@@ -443,6 +470,11 @@ message HostResp {
   }
   // UpdMetaInfo: response for update host meta information
   message UpdMetaInfo {
+    // Hosts: list of hosts
+    repeated Host hosts = 1;
+  }
+  // UpdHealthStatus: response for update host health status
+  message UpdHealthStatus {
     // Hosts: list of hosts
     repeated Host hosts = 1;
   }
