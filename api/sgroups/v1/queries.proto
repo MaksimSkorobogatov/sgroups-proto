@@ -932,3 +932,54 @@ message SyncStatusResp {
   // last succeeded updated DB timestamp
   google.protobuf.Timestamp updated_at = 1;
 }
+
+// AuthnReq: authentication requests
+message AuthnReq {
+  // Metadata: host metadata for authentication
+  message Metadata {
+    // Name: host name
+    string name = 1;
+    // Namespace: host namespace
+    string namespace = 2;
+  }
+  // BootstrapToken: request to issue a bootstrap JWT for a host
+  message BootstrapToken {
+    // Metadata: target host
+    Metadata metadata = 1 [(buf.validate.field) = {required: true}];
+  }
+
+  // SignCertificate: request to sign a certificate from a CSR for a host
+  message SignCertificate {
+    // Metadata: target host
+    Metadata metadata = 1 [(buf.validate.field) = {required: true}];
+    // Spec: certificate signing request spec
+    message Spec {
+      // Csr: PEM-encoded certificate signing request
+      string csr = 1 [
+        (google.api.field_behavior) = REQUIRED,
+        (buf.validate.field) = {
+          string: {min_len: 1}
+        }
+      ];
+    }
+    // Spec: certificate signing request spec
+    Spec spec = 2 [(buf.validate.field) = {required: true}];
+  }
+}
+
+// AuthnResp: authentication responses
+message AuthnResp {
+  // BootstrapToken: issued bootstrap JWT
+  message BootstrapToken {
+    // Token: signed bootstrap JWT
+    string token = 1;
+  }
+
+  // SignCertificate: signed certificate result
+  message SignCertificate {
+    // Certificate: PEM-encoded signed certificate
+    string certificate = 1;
+    // CaChain: PEM-encoded CA chain
+    repeated string ca_chain = 2;
+  }
+}

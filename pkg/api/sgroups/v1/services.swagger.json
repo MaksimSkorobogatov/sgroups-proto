@@ -44,6 +44,10 @@
     {
       "name": "SGroupsStatusAPI",
       "description": "SGroups Status API"
+    },
+    {
+      "name": "SGroupsAuthnAPI",
+      "description": "Authn (enrollment) API"
     }
   ],
   "schemes": [
@@ -199,6 +203,74 @@
         ],
         "tags": [
           "AddressGroup"
+        ]
+      }
+    },
+    "/v1/authn/bootstrap-token": {
+      "post": {
+        "summary": "IssueBootstrapToken: issue a bootstrap JWT for a host",
+        "description": "IssueBootstrapToken: issue a bootstrap JWT for a host",
+        "operationId": "SGroupsAuthnAPI_IssueBootstrapToken",
+        "responses": {
+          "200": {
+            "description": "A successful response.",
+            "schema": {
+              "$ref": "#/definitions/v1AuthnRespBootstrapToken"
+            }
+          },
+          "default": {
+            "description": "An unexpected error response.",
+            "schema": {
+              "$ref": "#/definitions/rpcStatus"
+            }
+          }
+        },
+        "parameters": [
+          {
+            "name": "body",
+            "in": "body",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/v1AuthnReqBootstrapToken"
+            }
+          }
+        ],
+        "tags": [
+          "Authn"
+        ]
+      }
+    },
+    "/v1/authn/certificate/sign": {
+      "post": {
+        "summary": "SignCertificate: sign a certificate from a CSR for a host",
+        "description": "SignCertificate: sign a certificate from a CSR for a host",
+        "operationId": "SGroupsAuthnAPI_SignCertificate",
+        "responses": {
+          "200": {
+            "description": "A successful response.",
+            "schema": {
+              "$ref": "#/definitions/v1AuthnRespSignCertificate"
+            }
+          },
+          "default": {
+            "description": "An unexpected error response.",
+            "schema": {
+              "$ref": "#/definitions/rpcStatus"
+            }
+          }
+        },
+        "parameters": [
+          {
+            "name": "body",
+            "in": "body",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/v1AuthnReqSignCertificate"
+            }
+          }
+        ],
+        "tags": [
+          "Authn"
         ]
       }
     },
@@ -1683,6 +1755,19 @@
       },
       "title": "AddressGroupExt: extended address group information"
     },
+    "AuthnReqSignCertificateSpec": {
+      "type": "object",
+      "properties": {
+        "csr": {
+          "type": "string",
+          "title": "Csr: PEM-encoded certificate signing request"
+        }
+      },
+      "title": "Spec: certificate signing request spec",
+      "required": [
+        "csr"
+      ]
+    },
     "EndpointsLocal": {
       "type": "object",
       "properties": {
@@ -2753,6 +2838,71 @@
         }
       },
       "title": "Spec: resource specification"
+    },
+    "v1AuthnReqBootstrapToken": {
+      "type": "object",
+      "properties": {
+        "metadata": {
+          "$ref": "#/definitions/v1AuthnReqMetadata",
+          "title": "Metadata: target host"
+        }
+      },
+      "title": "BootstrapToken: request to issue a bootstrap JWT for a host"
+    },
+    "v1AuthnReqMetadata": {
+      "type": "object",
+      "properties": {
+        "name": {
+          "type": "string",
+          "title": "Name: host name"
+        },
+        "namespace": {
+          "type": "string",
+          "title": "Namespace: host namespace"
+        }
+      },
+      "title": "Metadata: host metadata for authentication"
+    },
+    "v1AuthnReqSignCertificate": {
+      "type": "object",
+      "properties": {
+        "metadata": {
+          "$ref": "#/definitions/v1AuthnReqMetadata",
+          "title": "Metadata: target host"
+        },
+        "spec": {
+          "$ref": "#/definitions/AuthnReqSignCertificateSpec",
+          "title": "Spec: certificate signing request spec"
+        }
+      },
+      "title": "SignCertificate: request to sign a certificate from a CSR for a host"
+    },
+    "v1AuthnRespBootstrapToken": {
+      "type": "object",
+      "properties": {
+        "token": {
+          "type": "string",
+          "title": "Token: signed bootstrap JWT"
+        }
+      },
+      "title": "BootstrapToken: issued bootstrap JWT"
+    },
+    "v1AuthnRespSignCertificate": {
+      "type": "object",
+      "properties": {
+        "certificate": {
+          "type": "string",
+          "title": "Certificate: PEM-encoded signed certificate"
+        },
+        "caChain": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          },
+          "title": "CaChain: PEM-encoded CA chain"
+        }
+      },
+      "title": "SignCertificate: signed certificate result"
     },
     "v1ConnState": {
       "type": "string",

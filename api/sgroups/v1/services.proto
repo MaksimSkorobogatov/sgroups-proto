@@ -593,3 +593,32 @@ service SGroupsStatusAPI {
     option (google.api.http) = {get: "/v1/status/watch"};
   }
 }
+
+// SGroupsAuthnAPI: SGroups AuthN (enrollment) API
+service SGroupsAuthnAPI {
+  option (grpc.gateway.protoc_gen_openapiv2.options.openapiv2_tag) = {description: "Authn (enrollment) API"};
+
+  // IssueBootstrapToken: issue a bootstrap JWT for a host
+  rpc IssueBootstrapToken(AuthnReq.BootstrapToken) returns (AuthnResp.BootstrapToken) {
+    option (grpc.gateway.protoc_gen_openapiv2.options.openapiv2_operation) = {
+      description: "IssueBootstrapToken: issue a bootstrap JWT for a host"
+      tags: "Authn"
+    };
+    option (google.api.http) = {
+      post: "/v1/authn/bootstrap-token"
+      body: "*"
+    };
+  }
+
+  // SignCertificate: sign a certificate from a CSR for a host
+  rpc SignCertificate(AuthnReq.SignCertificate) returns (AuthnResp.SignCertificate) {
+    option (grpc.gateway.protoc_gen_openapiv2.options.openapiv2_operation) = {
+      description: "SignCertificate: sign a certificate from a CSR for a host"
+      tags: "Authn"
+    };
+    option (google.api.http) = {
+      post: "/v1/authn/certificate/sign"
+      body: "*"
+    };
+  }
+}

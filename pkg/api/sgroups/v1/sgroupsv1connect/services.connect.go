@@ -42,6 +42,8 @@ const (
 	SGroupsRulesAPIName = "sgroups.v1.SGroupsRulesAPI"
 	// SGroupsStatusAPIName is the fully-qualified name of the SGroupsStatusAPI service.
 	SGroupsStatusAPIName = "sgroups.v1.SGroupsStatusAPI"
+	// SGroupsAuthnAPIName is the fully-qualified name of the SGroupsAuthnAPI service.
+	SGroupsAuthnAPIName = "sgroups.v1.SGroupsAuthnAPI"
 )
 
 // These constants are the fully-qualified names of the RPCs defined in this package. They're
@@ -170,6 +172,12 @@ const (
 	SGroupsStatusAPIListProcedure = "/sgroups.v1.SGroupsStatusAPI/List"
 	// SGroupsStatusAPIWatchProcedure is the fully-qualified name of the SGroupsStatusAPI's Watch RPC.
 	SGroupsStatusAPIWatchProcedure = "/sgroups.v1.SGroupsStatusAPI/Watch"
+	// SGroupsAuthnAPIIssueBootstrapTokenProcedure is the fully-qualified name of the SGroupsAuthnAPI's
+	// IssueBootstrapToken RPC.
+	SGroupsAuthnAPIIssueBootstrapTokenProcedure = "/sgroups.v1.SGroupsAuthnAPI/IssueBootstrapToken"
+	// SGroupsAuthnAPISignCertificateProcedure is the fully-qualified name of the SGroupsAuthnAPI's
+	// SignCertificate RPC.
+	SGroupsAuthnAPISignCertificateProcedure = "/sgroups.v1.SGroupsAuthnAPI/SignCertificate"
 )
 
 // SGroupsNamespaceAPIClient is a client for the sgroups.v1.SGroupsNamespaceAPI service.
@@ -1846,4 +1854,104 @@ func (UnimplementedSGroupsStatusAPIHandler) List(context.Context, *connect.Reque
 
 func (UnimplementedSGroupsStatusAPIHandler) Watch(context.Context, *connect.Request[emptypb.Empty], *connect.ServerStream[v1.SyncStatusResp]) error {
 	return connect.NewError(connect.CodeUnimplemented, errors.New("sgroups.v1.SGroupsStatusAPI.Watch is not implemented"))
+}
+
+// SGroupsAuthnAPIClient is a client for the sgroups.v1.SGroupsAuthnAPI service.
+type SGroupsAuthnAPIClient interface {
+	// IssueBootstrapToken: issue a bootstrap JWT for a host
+	IssueBootstrapToken(context.Context, *connect.Request[v1.AuthnReq_BootstrapToken]) (*connect.Response[v1.AuthnResp_BootstrapToken], error)
+	// SignCertificate: sign a certificate from a CSR for a host
+	SignCertificate(context.Context, *connect.Request[v1.AuthnReq_SignCertificate]) (*connect.Response[v1.AuthnResp_SignCertificate], error)
+}
+
+// NewSGroupsAuthnAPIClient constructs a client for the sgroups.v1.SGroupsAuthnAPI service. By
+// default, it uses the Connect protocol with the binary Protobuf Codec, asks for gzipped responses,
+// and sends uncompressed requests. To use the gRPC or gRPC-Web protocols, supply the
+// connect.WithGRPC() or connect.WithGRPCWeb() options.
+//
+// The URL supplied here should be the base URL for the Connect or gRPC server (for example,
+// http://api.acme.com or https://acme.com/grpc).
+func NewSGroupsAuthnAPIClient(httpClient connect.HTTPClient, baseURL string, opts ...connect.ClientOption) SGroupsAuthnAPIClient {
+	baseURL = strings.TrimRight(baseURL, "/")
+	sGroupsAuthnAPIMethods := v1.File_sgroups_v1_services_proto.Services().ByName("SGroupsAuthnAPI").Methods()
+	return &sGroupsAuthnAPIClient{
+		issueBootstrapToken: connect.NewClient[v1.AuthnReq_BootstrapToken, v1.AuthnResp_BootstrapToken](
+			httpClient,
+			baseURL+SGroupsAuthnAPIIssueBootstrapTokenProcedure,
+			connect.WithSchema(sGroupsAuthnAPIMethods.ByName("IssueBootstrapToken")),
+			connect.WithClientOptions(opts...),
+		),
+		signCertificate: connect.NewClient[v1.AuthnReq_SignCertificate, v1.AuthnResp_SignCertificate](
+			httpClient,
+			baseURL+SGroupsAuthnAPISignCertificateProcedure,
+			connect.WithSchema(sGroupsAuthnAPIMethods.ByName("SignCertificate")),
+			connect.WithClientOptions(opts...),
+		),
+	}
+}
+
+// sGroupsAuthnAPIClient implements SGroupsAuthnAPIClient.
+type sGroupsAuthnAPIClient struct {
+	issueBootstrapToken *connect.Client[v1.AuthnReq_BootstrapToken, v1.AuthnResp_BootstrapToken]
+	signCertificate     *connect.Client[v1.AuthnReq_SignCertificate, v1.AuthnResp_SignCertificate]
+}
+
+// IssueBootstrapToken calls sgroups.v1.SGroupsAuthnAPI.IssueBootstrapToken.
+func (c *sGroupsAuthnAPIClient) IssueBootstrapToken(ctx context.Context, req *connect.Request[v1.AuthnReq_BootstrapToken]) (*connect.Response[v1.AuthnResp_BootstrapToken], error) {
+	return c.issueBootstrapToken.CallUnary(ctx, req)
+}
+
+// SignCertificate calls sgroups.v1.SGroupsAuthnAPI.SignCertificate.
+func (c *sGroupsAuthnAPIClient) SignCertificate(ctx context.Context, req *connect.Request[v1.AuthnReq_SignCertificate]) (*connect.Response[v1.AuthnResp_SignCertificate], error) {
+	return c.signCertificate.CallUnary(ctx, req)
+}
+
+// SGroupsAuthnAPIHandler is an implementation of the sgroups.v1.SGroupsAuthnAPI service.
+type SGroupsAuthnAPIHandler interface {
+	// IssueBootstrapToken: issue a bootstrap JWT for a host
+	IssueBootstrapToken(context.Context, *connect.Request[v1.AuthnReq_BootstrapToken]) (*connect.Response[v1.AuthnResp_BootstrapToken], error)
+	// SignCertificate: sign a certificate from a CSR for a host
+	SignCertificate(context.Context, *connect.Request[v1.AuthnReq_SignCertificate]) (*connect.Response[v1.AuthnResp_SignCertificate], error)
+}
+
+// NewSGroupsAuthnAPIHandler builds an HTTP handler from the service implementation. It returns the
+// path on which to mount the handler and the handler itself.
+//
+// By default, handlers support the Connect, gRPC, and gRPC-Web protocols with the binary Protobuf
+// and JSON codecs. They also support gzip compression.
+func NewSGroupsAuthnAPIHandler(svc SGroupsAuthnAPIHandler, opts ...connect.HandlerOption) (string, http.Handler) {
+	sGroupsAuthnAPIMethods := v1.File_sgroups_v1_services_proto.Services().ByName("SGroupsAuthnAPI").Methods()
+	sGroupsAuthnAPIIssueBootstrapTokenHandler := connect.NewUnaryHandler(
+		SGroupsAuthnAPIIssueBootstrapTokenProcedure,
+		svc.IssueBootstrapToken,
+		connect.WithSchema(sGroupsAuthnAPIMethods.ByName("IssueBootstrapToken")),
+		connect.WithHandlerOptions(opts...),
+	)
+	sGroupsAuthnAPISignCertificateHandler := connect.NewUnaryHandler(
+		SGroupsAuthnAPISignCertificateProcedure,
+		svc.SignCertificate,
+		connect.WithSchema(sGroupsAuthnAPIMethods.ByName("SignCertificate")),
+		connect.WithHandlerOptions(opts...),
+	)
+	return "/sgroups.v1.SGroupsAuthnAPI/", http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
+		switch r.URL.Path {
+		case SGroupsAuthnAPIIssueBootstrapTokenProcedure:
+			sGroupsAuthnAPIIssueBootstrapTokenHandler.ServeHTTP(w, r)
+		case SGroupsAuthnAPISignCertificateProcedure:
+			sGroupsAuthnAPISignCertificateHandler.ServeHTTP(w, r)
+		default:
+			http.NotFound(w, r)
+		}
+	})
+}
+
+// UnimplementedSGroupsAuthnAPIHandler returns CodeUnimplemented from all methods.
+type UnimplementedSGroupsAuthnAPIHandler struct{}
+
+func (UnimplementedSGroupsAuthnAPIHandler) IssueBootstrapToken(context.Context, *connect.Request[v1.AuthnReq_BootstrapToken]) (*connect.Response[v1.AuthnResp_BootstrapToken], error) {
+	return nil, connect.NewError(connect.CodeUnimplemented, errors.New("sgroups.v1.SGroupsAuthnAPI.IssueBootstrapToken is not implemented"))
+}
+
+func (UnimplementedSGroupsAuthnAPIHandler) SignCertificate(context.Context, *connect.Request[v1.AuthnReq_SignCertificate]) (*connect.Response[v1.AuthnResp_SignCertificate], error) {
+	return nil, connect.NewError(connect.CodeUnimplemented, errors.New("sgroups.v1.SGroupsAuthnAPI.SignCertificate is not implemented"))
 }

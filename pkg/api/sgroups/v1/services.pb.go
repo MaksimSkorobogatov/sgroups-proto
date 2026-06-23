@@ -126,7 +126,12 @@ const file_sgroups_v1_services_proto_rawDesc = "" +
 	"\x04List\x12\x16.google.protobuf.Empty\x1a\x1a.sgroups.v1.SyncStatusResp\"N\x92A4\n" +
 	"\x06Status\x1a*List: gets last succeeded update DB status\x82\xd3\xe4\x93\x02\x11\x12\x0f/v1/status/list\x12\x93\x01\n" +
 	"\x05Watch\x12\x16.google.protobuf.Empty\x1a\x1a.sgroups.v1.SyncStatusResp\"T\x92A9\n" +
-	"\x06Status\x1a/SyncStatuses: gets stream of update DB statuses\x82\xd3\xe4\x93\x02\x12\x12\x10/v1/status/watch0\x01\x1a\x17\x92A\x14\x12\x12SGroups Status APIB\xb0\x01\x92Ai\x12\x12\n" +
+	"\x06Status\x1a/SyncStatuses: gets stream of update DB statuses\x82\xd3\xe4\x93\x02\x12\x12\x10/v1/status/watch0\x01\x1a\x17\x92A\x14\x12\x12SGroups Status API2\xc5\x03\n" +
+	"\x0fSGroupsAuthnAPI\x12\xc7\x01\n" +
+	"\x13IssueBootstrapToken\x12#.sgroups.v1.AuthnReq.BootstrapToken\x1a$.sgroups.v1.AuthnResp.BootstrapToken\"e\x92A>\n" +
+	"\x05Authn\x1a5IssueBootstrapToken: issue a bootstrap JWT for a host\x82\xd3\xe4\x93\x02\x1e:\x01*\"\x19/v1/authn/bootstrap-token\x12\xca\x01\n" +
+	"\x0fSignCertificate\x12$.sgroups.v1.AuthnReq.SignCertificate\x1a%.sgroups.v1.AuthnResp.SignCertificate\"j\x92AB\n" +
+	"\x05Authn\x1a9SignCertificate: sign a certificate from a CSR for a host\x82\xd3\xe4\x93\x02\x1f:\x01*\"\x1a/v1/authn/certificate/sign\x1a\x1b\x92A\x18\x12\x16Authn (enrollment) APIB\xb0\x01\x92Ai\x12\x12\n" +
 	"\vSGroups API2\x031.0*\x01\x012\x10application/json:\x10application/jsonr,\n" +
 	"\rDocumentation\x12\x1bhttps://h-bf.prorobotech.ruZBgithub.com/PRO-Robotech/sgroups-proto/pkg/api/sgroups/v1;sgroupsv1b\x06proto3"
 
@@ -174,40 +179,44 @@ var file_sgroups_v1_services_proto_goTypes = []any{
 	(*RuleReq_List)(nil),                    // 40: sgroups.v1.RuleReq.List
 	(*RuleReq_Watch)(nil),                   // 41: sgroups.v1.RuleReq.Watch
 	(*emptypb.Empty)(nil),                   // 42: google.protobuf.Empty
-	(*NamespaceResp_Upsert)(nil),            // 43: sgroups.v1.NamespaceResp.Upsert
-	(*NamespaceResp_List)(nil),              // 44: sgroups.v1.NamespaceResp.List
-	(*NamespaceResp_Watch)(nil),             // 45: sgroups.v1.NamespaceResp.Watch
-	(*AddressGroupResp_Upsert)(nil),         // 46: sgroups.v1.AddressGroupResp.Upsert
-	(*AddressGroupResp_List)(nil),           // 47: sgroups.v1.AddressGroupResp.List
-	(*AddressGroupResp_Watch)(nil),          // 48: sgroups.v1.AddressGroupResp.Watch
-	(*NetworkResp_Upsert)(nil),              // 49: sgroups.v1.NetworkResp.Upsert
-	(*NetworkResp_List)(nil),                // 50: sgroups.v1.NetworkResp.List
-	(*NetworkResp_Watch)(nil),               // 51: sgroups.v1.NetworkResp.Watch
-	(*HostResp_Upsert)(nil),                 // 52: sgroups.v1.HostResp.Upsert
-	(*HostResp_List)(nil),                   // 53: sgroups.v1.HostResp.List
-	(*HostResp_Watch)(nil),                  // 54: sgroups.v1.HostResp.Watch
-	(*HostResp_UpdIPs)(nil),                 // 55: sgroups.v1.HostResp.UpdIPs
-	(*HostResp_UpdMetaInfo)(nil),            // 56: sgroups.v1.HostResp.UpdMetaInfo
-	(*HostResp_SocketStatistics_List)(nil),  // 57: sgroups.v1.HostResp.SocketStatistics.List
-	(*HostResp_SocketStatistics_Watch)(nil), // 58: sgroups.v1.HostResp.SocketStatistics.Watch
-	(*HostResp_Nft_List)(nil),               // 59: sgroups.v1.HostResp.Nft.List
-	(*HostResp_Nft_Watch)(nil),              // 60: sgroups.v1.HostResp.Nft.Watch
-	(*HostBindingResp_Upsert)(nil),          // 61: sgroups.v1.HostBindingResp.Upsert
-	(*HostBindingResp_List)(nil),            // 62: sgroups.v1.HostBindingResp.List
-	(*HostBindingResp_Watch)(nil),           // 63: sgroups.v1.HostBindingResp.Watch
-	(*NetworkBindingResp_Upsert)(nil),       // 64: sgroups.v1.NetworkBindingResp.Upsert
-	(*NetworkBindingResp_List)(nil),         // 65: sgroups.v1.NetworkBindingResp.List
-	(*NetworkBindingResp_Watch)(nil),        // 66: sgroups.v1.NetworkBindingResp.Watch
-	(*ServiceResp_Upsert)(nil),              // 67: sgroups.v1.ServiceResp.Upsert
-	(*ServiceResp_List)(nil),                // 68: sgroups.v1.ServiceResp.List
-	(*ServiceResp_Watch)(nil),               // 69: sgroups.v1.ServiceResp.Watch
-	(*ServiceBindingResp_Upsert)(nil),       // 70: sgroups.v1.ServiceBindingResp.Upsert
-	(*ServiceBindingResp_List)(nil),         // 71: sgroups.v1.ServiceBindingResp.List
-	(*ServiceBindingResp_Watch)(nil),        // 72: sgroups.v1.ServiceBindingResp.Watch
-	(*RuleResp_Upsert)(nil),                 // 73: sgroups.v1.RuleResp.Upsert
-	(*RuleResp_List)(nil),                   // 74: sgroups.v1.RuleResp.List
-	(*RuleResp_Watch)(nil),                  // 75: sgroups.v1.RuleResp.Watch
-	(*SyncStatusResp)(nil),                  // 76: sgroups.v1.SyncStatusResp
+	(*AuthnReq_BootstrapToken)(nil),         // 43: sgroups.v1.AuthnReq.BootstrapToken
+	(*AuthnReq_SignCertificate)(nil),        // 44: sgroups.v1.AuthnReq.SignCertificate
+	(*NamespaceResp_Upsert)(nil),            // 45: sgroups.v1.NamespaceResp.Upsert
+	(*NamespaceResp_List)(nil),              // 46: sgroups.v1.NamespaceResp.List
+	(*NamespaceResp_Watch)(nil),             // 47: sgroups.v1.NamespaceResp.Watch
+	(*AddressGroupResp_Upsert)(nil),         // 48: sgroups.v1.AddressGroupResp.Upsert
+	(*AddressGroupResp_List)(nil),           // 49: sgroups.v1.AddressGroupResp.List
+	(*AddressGroupResp_Watch)(nil),          // 50: sgroups.v1.AddressGroupResp.Watch
+	(*NetworkResp_Upsert)(nil),              // 51: sgroups.v1.NetworkResp.Upsert
+	(*NetworkResp_List)(nil),                // 52: sgroups.v1.NetworkResp.List
+	(*NetworkResp_Watch)(nil),               // 53: sgroups.v1.NetworkResp.Watch
+	(*HostResp_Upsert)(nil),                 // 54: sgroups.v1.HostResp.Upsert
+	(*HostResp_List)(nil),                   // 55: sgroups.v1.HostResp.List
+	(*HostResp_Watch)(nil),                  // 56: sgroups.v1.HostResp.Watch
+	(*HostResp_UpdIPs)(nil),                 // 57: sgroups.v1.HostResp.UpdIPs
+	(*HostResp_UpdMetaInfo)(nil),            // 58: sgroups.v1.HostResp.UpdMetaInfo
+	(*HostResp_SocketStatistics_List)(nil),  // 59: sgroups.v1.HostResp.SocketStatistics.List
+	(*HostResp_SocketStatistics_Watch)(nil), // 60: sgroups.v1.HostResp.SocketStatistics.Watch
+	(*HostResp_Nft_List)(nil),               // 61: sgroups.v1.HostResp.Nft.List
+	(*HostResp_Nft_Watch)(nil),              // 62: sgroups.v1.HostResp.Nft.Watch
+	(*HostBindingResp_Upsert)(nil),          // 63: sgroups.v1.HostBindingResp.Upsert
+	(*HostBindingResp_List)(nil),            // 64: sgroups.v1.HostBindingResp.List
+	(*HostBindingResp_Watch)(nil),           // 65: sgroups.v1.HostBindingResp.Watch
+	(*NetworkBindingResp_Upsert)(nil),       // 66: sgroups.v1.NetworkBindingResp.Upsert
+	(*NetworkBindingResp_List)(nil),         // 67: sgroups.v1.NetworkBindingResp.List
+	(*NetworkBindingResp_Watch)(nil),        // 68: sgroups.v1.NetworkBindingResp.Watch
+	(*ServiceResp_Upsert)(nil),              // 69: sgroups.v1.ServiceResp.Upsert
+	(*ServiceResp_List)(nil),                // 70: sgroups.v1.ServiceResp.List
+	(*ServiceResp_Watch)(nil),               // 71: sgroups.v1.ServiceResp.Watch
+	(*ServiceBindingResp_Upsert)(nil),       // 72: sgroups.v1.ServiceBindingResp.Upsert
+	(*ServiceBindingResp_List)(nil),         // 73: sgroups.v1.ServiceBindingResp.List
+	(*ServiceBindingResp_Watch)(nil),        // 74: sgroups.v1.ServiceBindingResp.Watch
+	(*RuleResp_Upsert)(nil),                 // 75: sgroups.v1.RuleResp.Upsert
+	(*RuleResp_List)(nil),                   // 76: sgroups.v1.RuleResp.List
+	(*RuleResp_Watch)(nil),                  // 77: sgroups.v1.RuleResp.Watch
+	(*SyncStatusResp)(nil),                  // 78: sgroups.v1.SyncStatusResp
+	(*AuthnResp_BootstrapToken)(nil),        // 79: sgroups.v1.AuthnResp.BootstrapToken
+	(*AuthnResp_SignCertificate)(nil),       // 80: sgroups.v1.AuthnResp.SignCertificate
 }
 var file_sgroups_v1_services_proto_depIdxs = []int32{
 	0,  // 0: sgroups.v1.SGroupsNamespaceAPI.Upsert:input_type -> sgroups.v1.NamespaceReq.Upsert
@@ -254,52 +263,56 @@ var file_sgroups_v1_services_proto_depIdxs = []int32{
 	41, // 41: sgroups.v1.SGroupsRulesAPI.Watch:input_type -> sgroups.v1.RuleReq.Watch
 	42, // 42: sgroups.v1.SGroupsStatusAPI.List:input_type -> google.protobuf.Empty
 	42, // 43: sgroups.v1.SGroupsStatusAPI.Watch:input_type -> google.protobuf.Empty
-	43, // 44: sgroups.v1.SGroupsNamespaceAPI.Upsert:output_type -> sgroups.v1.NamespaceResp.Upsert
-	42, // 45: sgroups.v1.SGroupsNamespaceAPI.Delete:output_type -> google.protobuf.Empty
-	44, // 46: sgroups.v1.SGroupsNamespaceAPI.List:output_type -> sgroups.v1.NamespaceResp.List
-	45, // 47: sgroups.v1.SGroupsNamespaceAPI.Watch:output_type -> sgroups.v1.NamespaceResp.Watch
-	46, // 48: sgroups.v1.SGroupsAddressGroupsAPI.Upsert:output_type -> sgroups.v1.AddressGroupResp.Upsert
-	42, // 49: sgroups.v1.SGroupsAddressGroupsAPI.Delete:output_type -> google.protobuf.Empty
-	47, // 50: sgroups.v1.SGroupsAddressGroupsAPI.List:output_type -> sgroups.v1.AddressGroupResp.List
-	48, // 51: sgroups.v1.SGroupsAddressGroupsAPI.Watch:output_type -> sgroups.v1.AddressGroupResp.Watch
-	49, // 52: sgroups.v1.SGroupsNetworksAPI.Upsert:output_type -> sgroups.v1.NetworkResp.Upsert
-	42, // 53: sgroups.v1.SGroupsNetworksAPI.Delete:output_type -> google.protobuf.Empty
-	50, // 54: sgroups.v1.SGroupsNetworksAPI.List:output_type -> sgroups.v1.NetworkResp.List
-	51, // 55: sgroups.v1.SGroupsNetworksAPI.Watch:output_type -> sgroups.v1.NetworkResp.Watch
-	52, // 56: sgroups.v1.SGroupsHostsAPI.Upsert:output_type -> sgroups.v1.HostResp.Upsert
-	42, // 57: sgroups.v1.SGroupsHostsAPI.Delete:output_type -> google.protobuf.Empty
-	53, // 58: sgroups.v1.SGroupsHostsAPI.List:output_type -> sgroups.v1.HostResp.List
-	54, // 59: sgroups.v1.SGroupsHostsAPI.Watch:output_type -> sgroups.v1.HostResp.Watch
-	55, // 60: sgroups.v1.SGroupsHostsAPI.UpdIPs:output_type -> sgroups.v1.HostResp.UpdIPs
-	56, // 61: sgroups.v1.SGroupsHostsAPI.UpdMetaInfo:output_type -> sgroups.v1.HostResp.UpdMetaInfo
-	57, // 62: sgroups.v1.SGroupsHostsAPI.ListSocketStatistics:output_type -> sgroups.v1.HostResp.SocketStatistics.List
-	58, // 63: sgroups.v1.SGroupsHostsAPI.WatchSocketStatistics:output_type -> sgroups.v1.HostResp.SocketStatistics.Watch
-	59, // 64: sgroups.v1.SGroupsHostsAPI.ListNft:output_type -> sgroups.v1.HostResp.Nft.List
-	60, // 65: sgroups.v1.SGroupsHostsAPI.WatchNft:output_type -> sgroups.v1.HostResp.Nft.Watch
-	61, // 66: sgroups.v1.SGroupsHostBindingAPI.Upsert:output_type -> sgroups.v1.HostBindingResp.Upsert
-	42, // 67: sgroups.v1.SGroupsHostBindingAPI.Delete:output_type -> google.protobuf.Empty
-	62, // 68: sgroups.v1.SGroupsHostBindingAPI.List:output_type -> sgroups.v1.HostBindingResp.List
-	63, // 69: sgroups.v1.SGroupsHostBindingAPI.Watch:output_type -> sgroups.v1.HostBindingResp.Watch
-	64, // 70: sgroups.v1.SGroupsNetworkBindingAPI.Upsert:output_type -> sgroups.v1.NetworkBindingResp.Upsert
-	42, // 71: sgroups.v1.SGroupsNetworkBindingAPI.Delete:output_type -> google.protobuf.Empty
-	65, // 72: sgroups.v1.SGroupsNetworkBindingAPI.List:output_type -> sgroups.v1.NetworkBindingResp.List
-	66, // 73: sgroups.v1.SGroupsNetworkBindingAPI.Watch:output_type -> sgroups.v1.NetworkBindingResp.Watch
-	67, // 74: sgroups.v1.SGroupsServicesAPI.Upsert:output_type -> sgroups.v1.ServiceResp.Upsert
-	42, // 75: sgroups.v1.SGroupsServicesAPI.Delete:output_type -> google.protobuf.Empty
-	68, // 76: sgroups.v1.SGroupsServicesAPI.List:output_type -> sgroups.v1.ServiceResp.List
-	69, // 77: sgroups.v1.SGroupsServicesAPI.Watch:output_type -> sgroups.v1.ServiceResp.Watch
-	70, // 78: sgroups.v1.SGroupsServiceBindingAPI.Upsert:output_type -> sgroups.v1.ServiceBindingResp.Upsert
-	42, // 79: sgroups.v1.SGroupsServiceBindingAPI.Delete:output_type -> google.protobuf.Empty
-	71, // 80: sgroups.v1.SGroupsServiceBindingAPI.List:output_type -> sgroups.v1.ServiceBindingResp.List
-	72, // 81: sgroups.v1.SGroupsServiceBindingAPI.Watch:output_type -> sgroups.v1.ServiceBindingResp.Watch
-	73, // 82: sgroups.v1.SGroupsRulesAPI.Upsert:output_type -> sgroups.v1.RuleResp.Upsert
-	42, // 83: sgroups.v1.SGroupsRulesAPI.Delete:output_type -> google.protobuf.Empty
-	74, // 84: sgroups.v1.SGroupsRulesAPI.List:output_type -> sgroups.v1.RuleResp.List
-	75, // 85: sgroups.v1.SGroupsRulesAPI.Watch:output_type -> sgroups.v1.RuleResp.Watch
-	76, // 86: sgroups.v1.SGroupsStatusAPI.List:output_type -> sgroups.v1.SyncStatusResp
-	76, // 87: sgroups.v1.SGroupsStatusAPI.Watch:output_type -> sgroups.v1.SyncStatusResp
-	44, // [44:88] is the sub-list for method output_type
-	0,  // [0:44] is the sub-list for method input_type
+	43, // 44: sgroups.v1.SGroupsAuthnAPI.IssueBootstrapToken:input_type -> sgroups.v1.AuthnReq.BootstrapToken
+	44, // 45: sgroups.v1.SGroupsAuthnAPI.SignCertificate:input_type -> sgroups.v1.AuthnReq.SignCertificate
+	45, // 46: sgroups.v1.SGroupsNamespaceAPI.Upsert:output_type -> sgroups.v1.NamespaceResp.Upsert
+	42, // 47: sgroups.v1.SGroupsNamespaceAPI.Delete:output_type -> google.protobuf.Empty
+	46, // 48: sgroups.v1.SGroupsNamespaceAPI.List:output_type -> sgroups.v1.NamespaceResp.List
+	47, // 49: sgroups.v1.SGroupsNamespaceAPI.Watch:output_type -> sgroups.v1.NamespaceResp.Watch
+	48, // 50: sgroups.v1.SGroupsAddressGroupsAPI.Upsert:output_type -> sgroups.v1.AddressGroupResp.Upsert
+	42, // 51: sgroups.v1.SGroupsAddressGroupsAPI.Delete:output_type -> google.protobuf.Empty
+	49, // 52: sgroups.v1.SGroupsAddressGroupsAPI.List:output_type -> sgroups.v1.AddressGroupResp.List
+	50, // 53: sgroups.v1.SGroupsAddressGroupsAPI.Watch:output_type -> sgroups.v1.AddressGroupResp.Watch
+	51, // 54: sgroups.v1.SGroupsNetworksAPI.Upsert:output_type -> sgroups.v1.NetworkResp.Upsert
+	42, // 55: sgroups.v1.SGroupsNetworksAPI.Delete:output_type -> google.protobuf.Empty
+	52, // 56: sgroups.v1.SGroupsNetworksAPI.List:output_type -> sgroups.v1.NetworkResp.List
+	53, // 57: sgroups.v1.SGroupsNetworksAPI.Watch:output_type -> sgroups.v1.NetworkResp.Watch
+	54, // 58: sgroups.v1.SGroupsHostsAPI.Upsert:output_type -> sgroups.v1.HostResp.Upsert
+	42, // 59: sgroups.v1.SGroupsHostsAPI.Delete:output_type -> google.protobuf.Empty
+	55, // 60: sgroups.v1.SGroupsHostsAPI.List:output_type -> sgroups.v1.HostResp.List
+	56, // 61: sgroups.v1.SGroupsHostsAPI.Watch:output_type -> sgroups.v1.HostResp.Watch
+	57, // 62: sgroups.v1.SGroupsHostsAPI.UpdIPs:output_type -> sgroups.v1.HostResp.UpdIPs
+	58, // 63: sgroups.v1.SGroupsHostsAPI.UpdMetaInfo:output_type -> sgroups.v1.HostResp.UpdMetaInfo
+	59, // 64: sgroups.v1.SGroupsHostsAPI.ListSocketStatistics:output_type -> sgroups.v1.HostResp.SocketStatistics.List
+	60, // 65: sgroups.v1.SGroupsHostsAPI.WatchSocketStatistics:output_type -> sgroups.v1.HostResp.SocketStatistics.Watch
+	61, // 66: sgroups.v1.SGroupsHostsAPI.ListNft:output_type -> sgroups.v1.HostResp.Nft.List
+	62, // 67: sgroups.v1.SGroupsHostsAPI.WatchNft:output_type -> sgroups.v1.HostResp.Nft.Watch
+	63, // 68: sgroups.v1.SGroupsHostBindingAPI.Upsert:output_type -> sgroups.v1.HostBindingResp.Upsert
+	42, // 69: sgroups.v1.SGroupsHostBindingAPI.Delete:output_type -> google.protobuf.Empty
+	64, // 70: sgroups.v1.SGroupsHostBindingAPI.List:output_type -> sgroups.v1.HostBindingResp.List
+	65, // 71: sgroups.v1.SGroupsHostBindingAPI.Watch:output_type -> sgroups.v1.HostBindingResp.Watch
+	66, // 72: sgroups.v1.SGroupsNetworkBindingAPI.Upsert:output_type -> sgroups.v1.NetworkBindingResp.Upsert
+	42, // 73: sgroups.v1.SGroupsNetworkBindingAPI.Delete:output_type -> google.protobuf.Empty
+	67, // 74: sgroups.v1.SGroupsNetworkBindingAPI.List:output_type -> sgroups.v1.NetworkBindingResp.List
+	68, // 75: sgroups.v1.SGroupsNetworkBindingAPI.Watch:output_type -> sgroups.v1.NetworkBindingResp.Watch
+	69, // 76: sgroups.v1.SGroupsServicesAPI.Upsert:output_type -> sgroups.v1.ServiceResp.Upsert
+	42, // 77: sgroups.v1.SGroupsServicesAPI.Delete:output_type -> google.protobuf.Empty
+	70, // 78: sgroups.v1.SGroupsServicesAPI.List:output_type -> sgroups.v1.ServiceResp.List
+	71, // 79: sgroups.v1.SGroupsServicesAPI.Watch:output_type -> sgroups.v1.ServiceResp.Watch
+	72, // 80: sgroups.v1.SGroupsServiceBindingAPI.Upsert:output_type -> sgroups.v1.ServiceBindingResp.Upsert
+	42, // 81: sgroups.v1.SGroupsServiceBindingAPI.Delete:output_type -> google.protobuf.Empty
+	73, // 82: sgroups.v1.SGroupsServiceBindingAPI.List:output_type -> sgroups.v1.ServiceBindingResp.List
+	74, // 83: sgroups.v1.SGroupsServiceBindingAPI.Watch:output_type -> sgroups.v1.ServiceBindingResp.Watch
+	75, // 84: sgroups.v1.SGroupsRulesAPI.Upsert:output_type -> sgroups.v1.RuleResp.Upsert
+	42, // 85: sgroups.v1.SGroupsRulesAPI.Delete:output_type -> google.protobuf.Empty
+	76, // 86: sgroups.v1.SGroupsRulesAPI.List:output_type -> sgroups.v1.RuleResp.List
+	77, // 87: sgroups.v1.SGroupsRulesAPI.Watch:output_type -> sgroups.v1.RuleResp.Watch
+	78, // 88: sgroups.v1.SGroupsStatusAPI.List:output_type -> sgroups.v1.SyncStatusResp
+	78, // 89: sgroups.v1.SGroupsStatusAPI.Watch:output_type -> sgroups.v1.SyncStatusResp
+	79, // 90: sgroups.v1.SGroupsAuthnAPI.IssueBootstrapToken:output_type -> sgroups.v1.AuthnResp.BootstrapToken
+	80, // 91: sgroups.v1.SGroupsAuthnAPI.SignCertificate:output_type -> sgroups.v1.AuthnResp.SignCertificate
+	46, // [46:92] is the sub-list for method output_type
+	0,  // [0:46] is the sub-list for method input_type
 	0,  // [0:0] is the sub-list for extension type_name
 	0,  // [0:0] is the sub-list for extension extendee
 	0,  // [0:0] is the sub-list for field type_name
@@ -319,7 +332,7 @@ func file_sgroups_v1_services_proto_init() {
 			NumEnums:      0,
 			NumMessages:   0,
 			NumExtensions: 0,
-			NumServices:   10,
+			NumServices:   11,
 		},
 		GoTypes:           file_sgroups_v1_services_proto_goTypes,
 		DependencyIndexes: file_sgroups_v1_services_proto_depIdxs,

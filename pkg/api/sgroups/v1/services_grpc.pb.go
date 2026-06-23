@@ -2507,3 +2507,151 @@ var SGroupsStatusAPI_ServiceDesc = grpc.ServiceDesc{
 	},
 	Metadata: "sgroups/v1/services.proto",
 }
+
+const (
+	SGroupsAuthnAPI_IssueBootstrapToken_FullMethodName = "/sgroups.v1.SGroupsAuthnAPI/IssueBootstrapToken"
+	SGroupsAuthnAPI_SignCertificate_FullMethodName     = "/sgroups.v1.SGroupsAuthnAPI/SignCertificate"
+)
+
+// SGroupsAuthnAPIClient is the client API for SGroupsAuthnAPI service.
+//
+// For semantics around ctx use and closing/ending streaming RPCs, please refer to https://pkg.go.dev/google.golang.org/grpc/?tab=doc#ClientConn.NewStream.
+//
+// SGroupsAuthnAPI: SGroups AuthN (enrollment) API
+type SGroupsAuthnAPIClient interface {
+	// IssueBootstrapToken: issue a bootstrap JWT for a host
+	IssueBootstrapToken(ctx context.Context, in *AuthnReq_BootstrapToken, opts ...grpc.CallOption) (*AuthnResp_BootstrapToken, error)
+	// SignCertificate: sign a certificate from a CSR for a host
+	SignCertificate(ctx context.Context, in *AuthnReq_SignCertificate, opts ...grpc.CallOption) (*AuthnResp_SignCertificate, error)
+}
+
+type sGroupsAuthnAPIClient struct {
+	cc grpc.ClientConnInterface
+}
+
+func NewSGroupsAuthnAPIClient(cc grpc.ClientConnInterface) SGroupsAuthnAPIClient {
+	return &sGroupsAuthnAPIClient{cc}
+}
+
+func (c *sGroupsAuthnAPIClient) IssueBootstrapToken(ctx context.Context, in *AuthnReq_BootstrapToken, opts ...grpc.CallOption) (*AuthnResp_BootstrapToken, error) {
+	cOpts := append([]grpc.CallOption{grpc.StaticMethod()}, opts...)
+	out := new(AuthnResp_BootstrapToken)
+	err := c.cc.Invoke(ctx, SGroupsAuthnAPI_IssueBootstrapToken_FullMethodName, in, out, cOpts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
+func (c *sGroupsAuthnAPIClient) SignCertificate(ctx context.Context, in *AuthnReq_SignCertificate, opts ...grpc.CallOption) (*AuthnResp_SignCertificate, error) {
+	cOpts := append([]grpc.CallOption{grpc.StaticMethod()}, opts...)
+	out := new(AuthnResp_SignCertificate)
+	err := c.cc.Invoke(ctx, SGroupsAuthnAPI_SignCertificate_FullMethodName, in, out, cOpts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
+// SGroupsAuthnAPIServer is the server API for SGroupsAuthnAPI service.
+// All implementations must embed UnimplementedSGroupsAuthnAPIServer
+// for forward compatibility.
+//
+// SGroupsAuthnAPI: SGroups AuthN (enrollment) API
+type SGroupsAuthnAPIServer interface {
+	// IssueBootstrapToken: issue a bootstrap JWT for a host
+	IssueBootstrapToken(context.Context, *AuthnReq_BootstrapToken) (*AuthnResp_BootstrapToken, error)
+	// SignCertificate: sign a certificate from a CSR for a host
+	SignCertificate(context.Context, *AuthnReq_SignCertificate) (*AuthnResp_SignCertificate, error)
+	mustEmbedUnimplementedSGroupsAuthnAPIServer()
+}
+
+// UnimplementedSGroupsAuthnAPIServer must be embedded to have
+// forward compatible implementations.
+//
+// NOTE: this should be embedded by value instead of pointer to avoid a nil
+// pointer dereference when methods are called.
+type UnimplementedSGroupsAuthnAPIServer struct{}
+
+func (UnimplementedSGroupsAuthnAPIServer) IssueBootstrapToken(context.Context, *AuthnReq_BootstrapToken) (*AuthnResp_BootstrapToken, error) {
+	return nil, status.Error(codes.Unimplemented, "method IssueBootstrapToken not implemented")
+}
+func (UnimplementedSGroupsAuthnAPIServer) SignCertificate(context.Context, *AuthnReq_SignCertificate) (*AuthnResp_SignCertificate, error) {
+	return nil, status.Error(codes.Unimplemented, "method SignCertificate not implemented")
+}
+func (UnimplementedSGroupsAuthnAPIServer) mustEmbedUnimplementedSGroupsAuthnAPIServer() {}
+func (UnimplementedSGroupsAuthnAPIServer) testEmbeddedByValue()                         {}
+
+// UnsafeSGroupsAuthnAPIServer may be embedded to opt out of forward compatibility for this service.
+// Use of this interface is not recommended, as added methods to SGroupsAuthnAPIServer will
+// result in compilation errors.
+type UnsafeSGroupsAuthnAPIServer interface {
+	mustEmbedUnimplementedSGroupsAuthnAPIServer()
+}
+
+func RegisterSGroupsAuthnAPIServer(s grpc.ServiceRegistrar, srv SGroupsAuthnAPIServer) {
+	// If the following call panics, it indicates UnimplementedSGroupsAuthnAPIServer was
+	// embedded by pointer and is nil.  This will cause panics if an
+	// unimplemented method is ever invoked, so we test this at initialization
+	// time to prevent it from happening at runtime later due to I/O.
+	if t, ok := srv.(interface{ testEmbeddedByValue() }); ok {
+		t.testEmbeddedByValue()
+	}
+	s.RegisterService(&SGroupsAuthnAPI_ServiceDesc, srv)
+}
+
+func _SGroupsAuthnAPI_IssueBootstrapToken_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(AuthnReq_BootstrapToken)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(SGroupsAuthnAPIServer).IssueBootstrapToken(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: SGroupsAuthnAPI_IssueBootstrapToken_FullMethodName,
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(SGroupsAuthnAPIServer).IssueBootstrapToken(ctx, req.(*AuthnReq_BootstrapToken))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
+func _SGroupsAuthnAPI_SignCertificate_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(AuthnReq_SignCertificate)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(SGroupsAuthnAPIServer).SignCertificate(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: SGroupsAuthnAPI_SignCertificate_FullMethodName,
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(SGroupsAuthnAPIServer).SignCertificate(ctx, req.(*AuthnReq_SignCertificate))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
+// SGroupsAuthnAPI_ServiceDesc is the grpc.ServiceDesc for SGroupsAuthnAPI service.
+// It's only intended for direct use with grpc.RegisterService,
+// and not to be introspected or modified (even as a copy)
+var SGroupsAuthnAPI_ServiceDesc = grpc.ServiceDesc{
+	ServiceName: "sgroups.v1.SGroupsAuthnAPI",
+	HandlerType: (*SGroupsAuthnAPIServer)(nil),
+	Methods: []grpc.MethodDesc{
+		{
+			MethodName: "IssueBootstrapToken",
+			Handler:    _SGroupsAuthnAPI_IssueBootstrapToken_Handler,
+		},
+		{
+			MethodName: "SignCertificate",
+			Handler:    _SGroupsAuthnAPI_SignCertificate_Handler,
+		},
+	},
+	Streams:  []grpc.StreamDesc{},
+	Metadata: "sgroups/v1/services.proto",
+}

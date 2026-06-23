@@ -1167,6 +1167,60 @@ func request_SGroupsStatusAPI_Watch_0(ctx context.Context, marshaler runtime.Mar
 	return stream, metadata, nil
 }
 
+func request_SGroupsAuthnAPI_IssueBootstrapToken_0(ctx context.Context, marshaler runtime.Marshaler, client SGroupsAuthnAPIClient, req *http.Request, pathParams map[string]string) (proto.Message, runtime.ServerMetadata, error) {
+	var (
+		protoReq AuthnReq_BootstrapToken
+		metadata runtime.ServerMetadata
+	)
+	if err := marshaler.NewDecoder(req.Body).Decode(&protoReq); err != nil && !errors.Is(err, io.EOF) {
+		return nil, metadata, status.Errorf(codes.InvalidArgument, "%v", err)
+	}
+	if req.Body != nil {
+		_, _ = io.Copy(io.Discard, req.Body)
+	}
+	msg, err := client.IssueBootstrapToken(ctx, &protoReq, grpc.Header(&metadata.HeaderMD), grpc.Trailer(&metadata.TrailerMD))
+	return msg, metadata, err
+}
+
+func local_request_SGroupsAuthnAPI_IssueBootstrapToken_0(ctx context.Context, marshaler runtime.Marshaler, server SGroupsAuthnAPIServer, req *http.Request, pathParams map[string]string) (proto.Message, runtime.ServerMetadata, error) {
+	var (
+		protoReq AuthnReq_BootstrapToken
+		metadata runtime.ServerMetadata
+	)
+	if err := marshaler.NewDecoder(req.Body).Decode(&protoReq); err != nil && !errors.Is(err, io.EOF) {
+		return nil, metadata, status.Errorf(codes.InvalidArgument, "%v", err)
+	}
+	msg, err := server.IssueBootstrapToken(ctx, &protoReq)
+	return msg, metadata, err
+}
+
+func request_SGroupsAuthnAPI_SignCertificate_0(ctx context.Context, marshaler runtime.Marshaler, client SGroupsAuthnAPIClient, req *http.Request, pathParams map[string]string) (proto.Message, runtime.ServerMetadata, error) {
+	var (
+		protoReq AuthnReq_SignCertificate
+		metadata runtime.ServerMetadata
+	)
+	if err := marshaler.NewDecoder(req.Body).Decode(&protoReq); err != nil && !errors.Is(err, io.EOF) {
+		return nil, metadata, status.Errorf(codes.InvalidArgument, "%v", err)
+	}
+	if req.Body != nil {
+		_, _ = io.Copy(io.Discard, req.Body)
+	}
+	msg, err := client.SignCertificate(ctx, &protoReq, grpc.Header(&metadata.HeaderMD), grpc.Trailer(&metadata.TrailerMD))
+	return msg, metadata, err
+}
+
+func local_request_SGroupsAuthnAPI_SignCertificate_0(ctx context.Context, marshaler runtime.Marshaler, server SGroupsAuthnAPIServer, req *http.Request, pathParams map[string]string) (proto.Message, runtime.ServerMetadata, error) {
+	var (
+		protoReq AuthnReq_SignCertificate
+		metadata runtime.ServerMetadata
+	)
+	if err := marshaler.NewDecoder(req.Body).Decode(&protoReq); err != nil && !errors.Is(err, io.EOF) {
+		return nil, metadata, status.Errorf(codes.InvalidArgument, "%v", err)
+	}
+	msg, err := server.SignCertificate(ctx, &protoReq)
+	return msg, metadata, err
+}
+
 // RegisterSGroupsNamespaceAPIHandlerServer registers the http handlers for service SGroupsNamespaceAPI to "mux".
 // UnaryRPC     :call SGroupsNamespaceAPIServer directly.
 // StreamingRPC :currently unsupported pending https://github.com/grpc/grpc-go/issues/906.
@@ -1986,6 +2040,56 @@ func RegisterSGroupsStatusAPIHandlerServer(ctx context.Context, mux *runtime.Ser
 		_, outboundMarshaler := runtime.MarshalerForRequest(mux, req)
 		runtime.HTTPError(ctx, mux, outboundMarshaler, w, req, err)
 		return
+	})
+
+	return nil
+}
+
+// RegisterSGroupsAuthnAPIHandlerServer registers the http handlers for service SGroupsAuthnAPI to "mux".
+// UnaryRPC     :call SGroupsAuthnAPIServer directly.
+// StreamingRPC :currently unsupported pending https://github.com/grpc/grpc-go/issues/906.
+// Note that using this registration option will cause many gRPC library features to stop working. Consider using RegisterSGroupsAuthnAPIHandlerFromEndpoint instead.
+// GRPC interceptors will not work for this type of registration. To use interceptors, you must use the "runtime.WithMiddlewares" option in the "runtime.NewServeMux" call.
+func RegisterSGroupsAuthnAPIHandlerServer(ctx context.Context, mux *runtime.ServeMux, server SGroupsAuthnAPIServer) error {
+	mux.Handle(http.MethodPost, pattern_SGroupsAuthnAPI_IssueBootstrapToken_0, func(w http.ResponseWriter, req *http.Request, pathParams map[string]string) {
+		ctx, cancel := context.WithCancel(req.Context())
+		defer cancel()
+		var stream runtime.ServerTransportStream
+		ctx = grpc.NewContextWithServerTransportStream(ctx, &stream)
+		inboundMarshaler, outboundMarshaler := runtime.MarshalerForRequest(mux, req)
+		annotatedContext, err := runtime.AnnotateIncomingContext(ctx, mux, req, "/sgroups.v1.SGroupsAuthnAPI/IssueBootstrapToken", runtime.WithHTTPPathPattern("/v1/authn/bootstrap-token"))
+		if err != nil {
+			runtime.HTTPError(ctx, mux, outboundMarshaler, w, req, err)
+			return
+		}
+		resp, md, err := local_request_SGroupsAuthnAPI_IssueBootstrapToken_0(annotatedContext, inboundMarshaler, server, req, pathParams)
+		md.HeaderMD, md.TrailerMD = metadata.Join(md.HeaderMD, stream.Header()), metadata.Join(md.TrailerMD, stream.Trailer())
+		annotatedContext = runtime.NewServerMetadataContext(annotatedContext, md)
+		if err != nil {
+			runtime.HTTPError(annotatedContext, mux, outboundMarshaler, w, req, err)
+			return
+		}
+		forward_SGroupsAuthnAPI_IssueBootstrapToken_0(annotatedContext, mux, outboundMarshaler, w, req, resp, mux.GetForwardResponseOptions()...)
+	})
+	mux.Handle(http.MethodPost, pattern_SGroupsAuthnAPI_SignCertificate_0, func(w http.ResponseWriter, req *http.Request, pathParams map[string]string) {
+		ctx, cancel := context.WithCancel(req.Context())
+		defer cancel()
+		var stream runtime.ServerTransportStream
+		ctx = grpc.NewContextWithServerTransportStream(ctx, &stream)
+		inboundMarshaler, outboundMarshaler := runtime.MarshalerForRequest(mux, req)
+		annotatedContext, err := runtime.AnnotateIncomingContext(ctx, mux, req, "/sgroups.v1.SGroupsAuthnAPI/SignCertificate", runtime.WithHTTPPathPattern("/v1/authn/certificate/sign"))
+		if err != nil {
+			runtime.HTTPError(ctx, mux, outboundMarshaler, w, req, err)
+			return
+		}
+		resp, md, err := local_request_SGroupsAuthnAPI_SignCertificate_0(annotatedContext, inboundMarshaler, server, req, pathParams)
+		md.HeaderMD, md.TrailerMD = metadata.Join(md.HeaderMD, stream.Header()), metadata.Join(md.TrailerMD, stream.Trailer())
+		annotatedContext = runtime.NewServerMetadataContext(annotatedContext, md)
+		if err != nil {
+			runtime.HTTPError(annotatedContext, mux, outboundMarshaler, w, req, err)
+			return
+		}
+		forward_SGroupsAuthnAPI_SignCertificate_0(annotatedContext, mux, outboundMarshaler, w, req, resp, mux.GetForwardResponseOptions()...)
 	})
 
 	return nil
@@ -3275,4 +3379,87 @@ var (
 var (
 	forward_SGroupsStatusAPI_List_0  = runtime.ForwardResponseMessage
 	forward_SGroupsStatusAPI_Watch_0 = runtime.ForwardResponseStream
+)
+
+// RegisterSGroupsAuthnAPIHandlerFromEndpoint is same as RegisterSGroupsAuthnAPIHandler but
+// automatically dials to "endpoint" and closes the connection when "ctx" gets done.
+func RegisterSGroupsAuthnAPIHandlerFromEndpoint(ctx context.Context, mux *runtime.ServeMux, endpoint string, opts []grpc.DialOption) (err error) {
+	conn, err := grpc.NewClient(endpoint, opts...)
+	if err != nil {
+		return err
+	}
+	defer func() {
+		if err != nil {
+			if cerr := conn.Close(); cerr != nil {
+				grpclog.Errorf("Failed to close conn to %s: %v", endpoint, cerr)
+			}
+			return
+		}
+		go func() {
+			<-ctx.Done()
+			if cerr := conn.Close(); cerr != nil {
+				grpclog.Errorf("Failed to close conn to %s: %v", endpoint, cerr)
+			}
+		}()
+	}()
+	return RegisterSGroupsAuthnAPIHandler(ctx, mux, conn)
+}
+
+// RegisterSGroupsAuthnAPIHandler registers the http handlers for service SGroupsAuthnAPI to "mux".
+// The handlers forward requests to the grpc endpoint over "conn".
+func RegisterSGroupsAuthnAPIHandler(ctx context.Context, mux *runtime.ServeMux, conn *grpc.ClientConn) error {
+	return RegisterSGroupsAuthnAPIHandlerClient(ctx, mux, NewSGroupsAuthnAPIClient(conn))
+}
+
+// RegisterSGroupsAuthnAPIHandlerClient registers the http handlers for service SGroupsAuthnAPI
+// to "mux". The handlers forward requests to the grpc endpoint over the given implementation of "SGroupsAuthnAPIClient".
+// Note: the gRPC framework executes interceptors within the gRPC handler. If the passed in "SGroupsAuthnAPIClient"
+// doesn't go through the normal gRPC flow (creating a gRPC client etc.) then it will be up to the passed in
+// "SGroupsAuthnAPIClient" to call the correct interceptors. This client ignores the HTTP middlewares.
+func RegisterSGroupsAuthnAPIHandlerClient(ctx context.Context, mux *runtime.ServeMux, client SGroupsAuthnAPIClient) error {
+	mux.Handle(http.MethodPost, pattern_SGroupsAuthnAPI_IssueBootstrapToken_0, func(w http.ResponseWriter, req *http.Request, pathParams map[string]string) {
+		ctx, cancel := context.WithCancel(req.Context())
+		defer cancel()
+		inboundMarshaler, outboundMarshaler := runtime.MarshalerForRequest(mux, req)
+		annotatedContext, err := runtime.AnnotateContext(ctx, mux, req, "/sgroups.v1.SGroupsAuthnAPI/IssueBootstrapToken", runtime.WithHTTPPathPattern("/v1/authn/bootstrap-token"))
+		if err != nil {
+			runtime.HTTPError(ctx, mux, outboundMarshaler, w, req, err)
+			return
+		}
+		resp, md, err := request_SGroupsAuthnAPI_IssueBootstrapToken_0(annotatedContext, inboundMarshaler, client, req, pathParams)
+		annotatedContext = runtime.NewServerMetadataContext(annotatedContext, md)
+		if err != nil {
+			runtime.HTTPError(annotatedContext, mux, outboundMarshaler, w, req, err)
+			return
+		}
+		forward_SGroupsAuthnAPI_IssueBootstrapToken_0(annotatedContext, mux, outboundMarshaler, w, req, resp, mux.GetForwardResponseOptions()...)
+	})
+	mux.Handle(http.MethodPost, pattern_SGroupsAuthnAPI_SignCertificate_0, func(w http.ResponseWriter, req *http.Request, pathParams map[string]string) {
+		ctx, cancel := context.WithCancel(req.Context())
+		defer cancel()
+		inboundMarshaler, outboundMarshaler := runtime.MarshalerForRequest(mux, req)
+		annotatedContext, err := runtime.AnnotateContext(ctx, mux, req, "/sgroups.v1.SGroupsAuthnAPI/SignCertificate", runtime.WithHTTPPathPattern("/v1/authn/certificate/sign"))
+		if err != nil {
+			runtime.HTTPError(ctx, mux, outboundMarshaler, w, req, err)
+			return
+		}
+		resp, md, err := request_SGroupsAuthnAPI_SignCertificate_0(annotatedContext, inboundMarshaler, client, req, pathParams)
+		annotatedContext = runtime.NewServerMetadataContext(annotatedContext, md)
+		if err != nil {
+			runtime.HTTPError(annotatedContext, mux, outboundMarshaler, w, req, err)
+			return
+		}
+		forward_SGroupsAuthnAPI_SignCertificate_0(annotatedContext, mux, outboundMarshaler, w, req, resp, mux.GetForwardResponseOptions()...)
+	})
+	return nil
+}
+
+var (
+	pattern_SGroupsAuthnAPI_IssueBootstrapToken_0 = runtime.MustPattern(runtime.NewPattern(1, []int{2, 0, 2, 1, 2, 2}, []string{"v1", "authn", "bootstrap-token"}, ""))
+	pattern_SGroupsAuthnAPI_SignCertificate_0     = runtime.MustPattern(runtime.NewPattern(1, []int{2, 0, 2, 1, 2, 2, 2, 3}, []string{"v1", "authn", "certificate", "sign"}, ""))
+)
+
+var (
+	forward_SGroupsAuthnAPI_IssueBootstrapToken_0 = runtime.ForwardResponseMessage
+	forward_SGroupsAuthnAPI_SignCertificate_0     = runtime.ForwardResponseMessage
 )
