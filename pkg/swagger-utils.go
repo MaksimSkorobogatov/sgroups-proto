@@ -102,6 +102,9 @@ func init() {
 		SwaggerUtil[sgroupsv1.SGroupsStatusAPIServer]{},
 		SwaggerUtil[sgroupsv1.SGroupsStatusAPIClient]{},
 
+		SwaggerUtil[sgroupsv1.SGroupsAuthnAPIServer]{},
+		SwaggerUtil[sgroupsv1.SGroupsAuthnAPIClient]{},
+
 		SwaggerUtil[agentv1.AgentAPIServer]{},
 		SwaggerUtil[agentv1.AgentAPIClient]{},
 	}
