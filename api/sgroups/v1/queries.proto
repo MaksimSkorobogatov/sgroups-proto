@@ -370,8 +370,8 @@ message HostReq {
       common.MetadataScope metadata = 1 [(buf.validate.field) = {
         required: true
         cel: {
-          expression: "this.uid != '' || (this.name != '' && this.namespace != '')"
-          message: "either uid must be set, or both name and namespace must be set"
+          expression: "this.uid != '' && this.name != '' && this.namespace != ''"
+          message: "uid, name and namespace must be set"
         }
       }];
       // Spec: host specification for health status update

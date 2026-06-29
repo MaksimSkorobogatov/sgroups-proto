@@ -763,7 +763,7 @@ type Host_Spec struct {
 	MetaInfo *Host_Spec_MetaInfo `protobuf:"bytes,5,opt,name=meta_info,json=metaInfo,proto3" json:"meta_info,omitempty"`
 	// Endpoints: endpoints published by the host
 	Endpoints *Host_Spec_Endpoints `protobuf:"bytes,6,opt,name=endpoints,proto3" json:"endpoints,omitempty"`
-	// HealthStatus: health check status (output-only, populated by healthcheck controller)
+	// Healthy: health check status (output-only, populated by healthcheck controller)
 	Healthy       bool `protobuf:"varint,7,opt,name=healthy,proto3" json:"healthy,omitempty"`
 	unknownFields protoimpl.UnknownFields
 	sizeCache     protoimpl.SizeCache

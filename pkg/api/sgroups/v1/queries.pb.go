@@ -6676,7 +6676,7 @@ const file_sgroups_v1_queries_proto_rawDesc = "" +
 	"\bnetworks\x18\x02 \x03(\v2\".sgroups.v1.NetworkResp.NetworkExtR\bnetworks\x1as\n" +
 	"\x05Watch\x12*\n" +
 	"\x04type\x18\x01 \x01(\x0e2\x16.common.WatchEventTypeR\x04type\x12>\n" +
-	"\bnetworks\x18\x02 \x03(\v2\".sgroups.v1.NetworkResp.NetworkExtR\bnetworks\"\xeb\x12\n" +
+	"\bnetworks\x18\x02 \x03(\v2\".sgroups.v1.NetworkResp.NetworkExtR\bnetworks\"\xcc\x12\n" +
 	"\aHostReq\x1a=\n" +
 	"\x06Upsert\x123\n" +
 	"\x05hosts\x18\x01 \x03(\v2\x10.sgroups.v1.HostB\v\xe0A\x02\xbaH\x05\x92\x01\x02\b\x01R\x05hosts\x1a\x93\x02\n" +
@@ -6703,11 +6703,11 @@ const file_sgroups_v1_queries_proto_rawDesc = "" +
 	"\bmetadata\x18\x01 \x01(\v2\x15.common.MetadataScopeB\x87\x01\xbaH\x83\x01\xba\x01}\x12>either uid must be set, or both name and namespace must be set\x1a;this.uid != '' || (this.name != '' && this.namespace != '')\xc8\x01\x01R\bmetadata\x12I\n" +
 	"\x04spec\x18\x02 \x01(\v2-.sgroups.v1.HostReq.UpdMetaInfo.HostInfo.SpecB\x06\xbaH\x03\xc8\x01\x01R\x04spec\x1aC\n" +
 	"\x04Spec\x12;\n" +
-	"\tmeta_info\x18\x01 \x01(\v2\x1e.sgroups.v1.Host.Spec.MetaInfoR\bmetaInfo\x1a\x92\x03\n" +
+	"\tmeta_info\x18\x01 \x01(\v2\x1e.sgroups.v1.Host.Spec.MetaInfoR\bmetaInfo\x1a\xf3\x02\n" +
 	"\x0fUpdHealthStatus\x12K\n" +
-	"\x05hosts\x18\x01 \x03(\v2(.sgroups.v1.HostReq.UpdHealthStatus.HostB\v\xe0A\x02\xbaH\x05\x92\x01\x02\b\x01R\x05hosts\x1a\xb1\x02\n" +
-	"\x04Host\x12\xbb\x01\n" +
-	"\bmetadata\x18\x01 \x01(\v2\x15.common.MetadataScopeB\x87\x01\xbaH\x83\x01\xba\x01}\x12>either uid must be set, or both name and namespace must be set\x1a;this.uid != '' || (this.name != '' && this.namespace != '')\xc8\x01\x01R\bmetadata\x12I\n" +
+	"\x05hosts\x18\x01 \x03(\v2(.sgroups.v1.HostReq.UpdHealthStatus.HostB\v\xe0A\x02\xbaH\x05\x92\x01\x02\b\x01R\x05hosts\x1a\x92\x02\n" +
+	"\x04Host\x12\x9c\x01\n" +
+	"\bmetadata\x18\x01 \x01(\v2\x15.common.MetadataScopeBi\xbaHf\xba\x01`\x12#uid, name and namespace must be set\x1a9this.uid != '' && this.name != '' && this.namespace != ''\xc8\x01\x01R\bmetadata\x12I\n" +
 	"\x04spec\x18\x02 \x01(\v2-.sgroups.v1.HostReq.UpdHealthStatus.Host.SpecB\x06\xbaH\x03\xc8\x01\x01R\x04spec\x1a \n" +
 	"\x04Spec\x12\x18\n" +
 	"\ahealthy\x18\x01 \x01(\bR\ahealthy\x1a\xd2\x02\n" +
