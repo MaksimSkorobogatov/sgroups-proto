@@ -92,6 +92,17 @@ message Network {
   Spec spec = 2 [(buf.validate.field) = {required: true}];
 }
 
+// Healthy: host health check status reported by the healthcheck controller.
+// The DB stores it as a boolean; HEALTHY_UNDEFINED maps to false there.
+enum Healthy {
+  // HEALTHY_UNDEFINED: health status is unknown / not yet probed.
+  HEALTHY_UNDEFINED = 0;
+  // HEALTHY_TRUE: host is healthy.
+  HEALTHY_TRUE = 1;
+  // HEALTHY_FALSE: host is unhealthy.
+  HEALTHY_FALSE = 2;
+}
+
 // Host: represents host resource
 message Host {
   // Spec: resource specification
@@ -158,7 +169,7 @@ message Host {
       (grpc.gateway.protoc_gen_openapiv2.options.openapiv2_field) = {read_only: true}
     ];
     // Healthy: health check status (output-only, populated by healthcheck controller)
-    bool healthy = 7 [
+    Healthy healthy = 7 [
       (google.api.field_behavior) = OUTPUT_ONLY,
       (grpc.gateway.protoc_gen_openapiv2.options.openapiv2_field) = {read_only: true}
     ];

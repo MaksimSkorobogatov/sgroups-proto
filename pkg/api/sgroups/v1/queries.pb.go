@@ -3002,7 +3002,7 @@ func (x *HostReq_UpdHealthStatus_Host) GetSpec() *HostReq_UpdHealthStatus_Host_S
 type HostReq_UpdHealthStatus_Host_Spec struct {
 	state protoimpl.MessageState `protogen:"open.v1"`
 	// Healthy: whether the host is healthy
-	Healthy       bool `protobuf:"varint,1,opt,name=healthy,proto3" json:"healthy,omitempty"`
+	Healthy       Healthy `protobuf:"varint,1,opt,name=healthy,proto3,enum=sgroups.v1.Healthy" json:"healthy,omitempty"`
 	unknownFields protoimpl.UnknownFields
 	sizeCache     protoimpl.SizeCache
 }
@@ -3037,11 +3037,11 @@ func (*HostReq_UpdHealthStatus_Host_Spec) Descriptor() ([]byte, []int) {
 	return file_sgroups_v1_queries_proto_rawDescGZIP(), []int{6, 6, 0, 0}
 }
 
-func (x *HostReq_UpdHealthStatus_Host_Spec) GetHealthy() bool {
+func (x *HostReq_UpdHealthStatus_Host_Spec) GetHealthy() Healthy {
 	if x != nil {
 		return x.Healthy
 	}
-	return false
+	return Healthy_HEALTHY_UNDEFINED
 }
 
 // FieldSelector: resource field selector
@@ -7053,7 +7053,7 @@ const file_sgroups_v1_queries_proto_rawDesc = "" +
 	"\bnetworks\x18\x02 \x03(\v2\".sgroups.v1.NetworkResp.NetworkExtR\bnetworks\x1as\n" +
 	"\x05Watch\x12*\n" +
 	"\x04type\x18\x01 \x01(\x0e2\x16.common.WatchEventTypeR\x04type\x12>\n" +
-	"\bnetworks\x18\x02 \x03(\v2\".sgroups.v1.NetworkResp.NetworkExtR\bnetworks\"\xcc\x12\n" +
+	"\bnetworks\x18\x02 \x03(\v2\".sgroups.v1.NetworkResp.NetworkExtR\bnetworks\"\x80\x13\n" +
 	"\aHostReq\x1a=\n" +
 	"\x06Upsert\x123\n" +
 	"\x05hosts\x18\x01 \x03(\v2\x10.sgroups.v1.HostB\v\xe0A\x02\xbaH\x05\x92\x01\x02\b\x01R\x05hosts\x1a\x93\x02\n" +
@@ -7080,14 +7080,14 @@ const file_sgroups_v1_queries_proto_rawDesc = "" +
 	"\bmetadata\x18\x01 \x01(\v2\x15.common.MetadataScopeB\x87\x01\xbaH\x83\x01\xba\x01}\x12>either uid must be set, or both name and namespace must be set\x1a;this.uid != '' || (this.name != '' && this.namespace != '')\xc8\x01\x01R\bmetadata\x12I\n" +
 	"\x04spec\x18\x02 \x01(\v2-.sgroups.v1.HostReq.UpdMetaInfo.HostInfo.SpecB\x06\xbaH\x03\xc8\x01\x01R\x04spec\x1aC\n" +
 	"\x04Spec\x12;\n" +
-	"\tmeta_info\x18\x01 \x01(\v2\x1e.sgroups.v1.Host.Spec.MetaInfoR\bmetaInfo\x1a\xf3\x02\n" +
+	"\tmeta_info\x18\x01 \x01(\v2\x1e.sgroups.v1.Host.Spec.MetaInfoR\bmetaInfo\x1a\xa7\x03\n" +
 	"\x0fUpdHealthStatus\x12K\n" +
-	"\x05hosts\x18\x01 \x03(\v2(.sgroups.v1.HostReq.UpdHealthStatus.HostB\v\xe0A\x02\xbaH\x05\x92\x01\x02\b\x01R\x05hosts\x1a\x92\x02\n" +
-	"\x04Host\x12\x9c\x01\n" +
-	"\bmetadata\x18\x01 \x01(\v2\x15.common.MetadataScopeBi\xbaHf\xba\x01`\x12#uid, name and namespace must be set\x1a9this.uid != '' && this.name != '' && this.namespace != ''\xc8\x01\x01R\bmetadata\x12I\n" +
-	"\x04spec\x18\x02 \x01(\v2-.sgroups.v1.HostReq.UpdHealthStatus.Host.SpecB\x06\xbaH\x03\xc8\x01\x01R\x04spec\x1a \n" +
-	"\x04Spec\x12\x18\n" +
-	"\ahealthy\x18\x01 \x01(\bR\ahealthy\x1a\xd2\x02\n" +
+	"\x05hosts\x18\x01 \x03(\v2(.sgroups.v1.HostReq.UpdHealthStatus.HostB\v\xe0A\x02\xbaH\x05\x92\x01\x02\b\x01R\x05hosts\x1a\xc6\x02\n" +
+	"\x04Host\x12\xbb\x01\n" +
+	"\bmetadata\x18\x01 \x01(\v2\x15.common.MetadataScopeB\x87\x01\xbaH\x83\x01\xba\x01}\x12>either uid must be set, or both name and namespace must be set\x1a;this.uid != '' || (this.name != '' && this.namespace != '')\xc8\x01\x01R\bmetadata\x12I\n" +
+	"\x04spec\x18\x02 \x01(\v2-.sgroups.v1.HostReq.UpdHealthStatus.Host.SpecB\x06\xbaH\x03\xc8\x01\x01R\x04spec\x1a5\n" +
+	"\x04Spec\x12-\n" +
+	"\ahealthy\x18\x01 \x01(\x0e2\x13.sgroups.v1.HealthyR\ahealthy\x1a\xd2\x02\n" +
 	"\x10SocketStatistics\x1ay\n" +
 	"\rFieldSelector\x12\x12\n" +
 	"\x04name\x18\x01 \x01(\tR\x04name\x12\x1c\n" +
@@ -7496,20 +7496,21 @@ var file_sgroups_v1_queries_proto_goTypes = []any{
 	(*common.IPs)(nil),                      // 159: common.IPs
 	(*Host_Spec_Endpoints)(nil),             // 160: sgroups.v1.Host.Spec.Endpoints
 	(*Host_Spec_MetaInfo)(nil),              // 161: sgroups.v1.Host.Spec.MetaInfo
-	(*v1.SockStat_Selectors)(nil),           // 162: agent.v1.SockStat.Selectors
-	(*Host_Spec)(nil),                       // 163: sgroups.v1.Host.Spec
-	(*v1.SockStat)(nil),                     // 164: agent.v1.SockStat
-	(*v1.Nftables)(nil),                     // 165: agent.v1.Nftables
-	(*HostBinding)(nil),                     // 166: sgroups.v1.HostBinding
-	(*common.ResourceIdentifier)(nil),       // 167: common.ResourceIdentifier
-	(*NetworkBinding)(nil),                  // 168: sgroups.v1.NetworkBinding
-	(*Service)(nil),                         // 169: sgroups.v1.Service
-	(*Service_Spec)(nil),                    // 170: sgroups.v1.Service.Spec
-	(*ServiceBinding)(nil),                  // 171: sgroups.v1.ServiceBinding
-	(*Rule)(nil),                            // 172: sgroups.v1.Rule
-	(common.Session_Traffic)(0),             // 173: common.Session.Traffic
-	(common.Transport_Protocol)(0),          // 174: common.Transport.Protocol
-	(*common.Endpoints)(nil),                // 175: common.Endpoints
+	(Healthy)(0),                            // 162: sgroups.v1.Healthy
+	(*v1.SockStat_Selectors)(nil),           // 163: agent.v1.SockStat.Selectors
+	(*Host_Spec)(nil),                       // 164: sgroups.v1.Host.Spec
+	(*v1.SockStat)(nil),                     // 165: agent.v1.SockStat
+	(*v1.Nftables)(nil),                     // 166: agent.v1.Nftables
+	(*HostBinding)(nil),                     // 167: sgroups.v1.HostBinding
+	(*common.ResourceIdentifier)(nil),       // 168: common.ResourceIdentifier
+	(*NetworkBinding)(nil),                  // 169: sgroups.v1.NetworkBinding
+	(*Service)(nil),                         // 170: sgroups.v1.Service
+	(*Service_Spec)(nil),                    // 171: sgroups.v1.Service.Spec
+	(*ServiceBinding)(nil),                  // 172: sgroups.v1.ServiceBinding
+	(*Rule)(nil),                            // 173: sgroups.v1.Rule
+	(common.Session_Traffic)(0),             // 174: common.Session.Traffic
+	(common.Transport_Protocol)(0),          // 175: common.Transport.Protocol
+	(*common.Endpoints)(nil),                // 176: common.Endpoints
 }
 var file_sgroups_v1_queries_proto_depIdxs = []int32{
 	147, // 0: sgroups.v1.SyncStatusResp.updated_at:type_name -> google.protobuf.Timestamp
@@ -7565,100 +7566,101 @@ var file_sgroups_v1_queries_proto_depIdxs = []int32{
 	161, // 50: sgroups.v1.HostReq.UpdMetaInfo.HostInfo.Spec.meta_info:type_name -> sgroups.v1.Host.Spec.MetaInfo
 	152, // 51: sgroups.v1.HostReq.UpdHealthStatus.Host.metadata:type_name -> common.MetadataScope
 	66,  // 52: sgroups.v1.HostReq.UpdHealthStatus.Host.spec:type_name -> sgroups.v1.HostReq.UpdHealthStatus.Host.Spec
-	162, // 53: sgroups.v1.HostReq.SocketStatistics.FieldSelector.filters:type_name -> agent.v1.SockStat.Selectors
-	67,  // 54: sgroups.v1.HostReq.SocketStatistics.List.selectors:type_name -> sgroups.v1.HostReq.SocketStatistics.FieldSelector
-	67,  // 55: sgroups.v1.HostReq.SocketStatistics.Watch.selectors:type_name -> sgroups.v1.HostReq.SocketStatistics.FieldSelector
-	70,  // 56: sgroups.v1.HostReq.Nft.List.selectors:type_name -> sgroups.v1.HostReq.Nft.FieldSelector
-	70,  // 57: sgroups.v1.HostReq.Nft.Watch.selectors:type_name -> sgroups.v1.HostReq.Nft.FieldSelector
-	153, // 58: sgroups.v1.HostResp.HostExt.metadata:type_name -> common.Metadata
-	163, // 59: sgroups.v1.HostResp.HostExt.spec:type_name -> sgroups.v1.Host.Spec
-	155, // 60: sgroups.v1.HostResp.HostExt.refs:type_name -> common.ResourceRef
-	158, // 61: sgroups.v1.HostResp.Upsert.hosts:type_name -> sgroups.v1.Host
-	73,  // 62: sgroups.v1.HostResp.List.hosts:type_name -> sgroups.v1.HostResp.HostExt
-	149, // 63: sgroups.v1.HostResp.Watch.type:type_name -> common.WatchEventType
-	73,  // 64: sgroups.v1.HostResp.Watch.hosts:type_name -> sgroups.v1.HostResp.HostExt
-	158, // 65: sgroups.v1.HostResp.UpdIPs.hosts:type_name -> sgroups.v1.Host
-	158, // 66: sgroups.v1.HostResp.UpdMetaInfo.hosts:type_name -> sgroups.v1.Host
-	158, // 67: sgroups.v1.HostResp.UpdHealthStatus.hosts:type_name -> sgroups.v1.Host
-	164, // 68: sgroups.v1.HostResp.SocketStatistics.Host.stats:type_name -> agent.v1.SockStat
-	82,  // 69: sgroups.v1.HostResp.SocketStatistics.List.hosts:type_name -> sgroups.v1.HostResp.SocketStatistics.Host
-	82,  // 70: sgroups.v1.HostResp.SocketStatistics.Watch.hosts:type_name -> sgroups.v1.HostResp.SocketStatistics.Host
-	165, // 71: sgroups.v1.HostResp.Nft.Host.nft:type_name -> agent.v1.Nftables
-	85,  // 72: sgroups.v1.HostResp.Nft.List.hosts:type_name -> sgroups.v1.HostResp.Nft.Host
-	85,  // 73: sgroups.v1.HostResp.Nft.Watch.hosts:type_name -> sgroups.v1.HostResp.Nft.Host
-	166, // 74: sgroups.v1.HostBindingReq.Upsert.host_bindings:type_name -> sgroups.v1.HostBinding
-	93,  // 75: sgroups.v1.HostBindingReq.Delete.host_bindings:type_name -> sgroups.v1.HostBindingReq.Delete.HostBinding
-	94,  // 76: sgroups.v1.HostBindingReq.Selectors.field_selector:type_name -> sgroups.v1.HostBindingReq.Selectors.FieldSelector
-	95,  // 77: sgroups.v1.HostBindingReq.Selectors.label_selector:type_name -> sgroups.v1.HostBindingReq.Selectors.LabelSelectorEntry
-	90,  // 78: sgroups.v1.HostBindingReq.List.selectors:type_name -> sgroups.v1.HostBindingReq.Selectors
-	90,  // 79: sgroups.v1.HostBindingReq.Watch.selectors:type_name -> sgroups.v1.HostBindingReq.Selectors
-	152, // 80: sgroups.v1.HostBindingReq.Delete.HostBinding.metadata:type_name -> common.MetadataScope
-	167, // 81: sgroups.v1.HostBindingReq.Selectors.FieldSelector.address_group:type_name -> common.ResourceIdentifier
-	167, // 82: sgroups.v1.HostBindingReq.Selectors.FieldSelector.host:type_name -> common.ResourceIdentifier
-	166, // 83: sgroups.v1.HostBindingResp.Upsert.host_bindings:type_name -> sgroups.v1.HostBinding
-	166, // 84: sgroups.v1.HostBindingResp.List.host_bindings:type_name -> sgroups.v1.HostBinding
-	149, // 85: sgroups.v1.HostBindingResp.Watch.type:type_name -> common.WatchEventType
-	166, // 86: sgroups.v1.HostBindingResp.Watch.host_bindings:type_name -> sgroups.v1.HostBinding
-	168, // 87: sgroups.v1.NetworkBindingReq.Upsert.network_bindings:type_name -> sgroups.v1.NetworkBinding
-	104, // 88: sgroups.v1.NetworkBindingReq.Delete.network_bindings:type_name -> sgroups.v1.NetworkBindingReq.Delete.NetworkBinding
-	105, // 89: sgroups.v1.NetworkBindingReq.Selectors.field_selector:type_name -> sgroups.v1.NetworkBindingReq.Selectors.FieldSelector
-	106, // 90: sgroups.v1.NetworkBindingReq.Selectors.label_selector:type_name -> sgroups.v1.NetworkBindingReq.Selectors.LabelSelectorEntry
-	101, // 91: sgroups.v1.NetworkBindingReq.List.selectors:type_name -> sgroups.v1.NetworkBindingReq.Selectors
-	101, // 92: sgroups.v1.NetworkBindingReq.Watch.selectors:type_name -> sgroups.v1.NetworkBindingReq.Selectors
-	152, // 93: sgroups.v1.NetworkBindingReq.Delete.NetworkBinding.metadata:type_name -> common.MetadataScope
-	167, // 94: sgroups.v1.NetworkBindingReq.Selectors.FieldSelector.address_group:type_name -> common.ResourceIdentifier
-	167, // 95: sgroups.v1.NetworkBindingReq.Selectors.FieldSelector.network:type_name -> common.ResourceIdentifier
-	168, // 96: sgroups.v1.NetworkBindingResp.Upsert.network_bindings:type_name -> sgroups.v1.NetworkBinding
-	168, // 97: sgroups.v1.NetworkBindingResp.List.network_bindings:type_name -> sgroups.v1.NetworkBinding
-	149, // 98: sgroups.v1.NetworkBindingResp.Watch.type:type_name -> common.WatchEventType
-	168, // 99: sgroups.v1.NetworkBindingResp.Watch.network_bindings:type_name -> sgroups.v1.NetworkBinding
-	169, // 100: sgroups.v1.ServiceReq.Upsert.services:type_name -> sgroups.v1.Service
-	114, // 101: sgroups.v1.ServiceReq.Delete.services:type_name -> sgroups.v1.ServiceReq.Delete.Service
-	151, // 102: sgroups.v1.ServiceReq.List.selectors:type_name -> common.ResSelector
-	151, // 103: sgroups.v1.ServiceReq.Watch.selectors:type_name -> common.ResSelector
-	152, // 104: sgroups.v1.ServiceReq.Delete.Service.metadata:type_name -> common.MetadataScope
-	153, // 105: sgroups.v1.ServiceResp.ServiceExt.metadata:type_name -> common.Metadata
-	170, // 106: sgroups.v1.ServiceResp.ServiceExt.spec:type_name -> sgroups.v1.Service.Spec
-	155, // 107: sgroups.v1.ServiceResp.ServiceExt.refs:type_name -> common.ResourceRef
-	169, // 108: sgroups.v1.ServiceResp.Upsert.services:type_name -> sgroups.v1.Service
-	115, // 109: sgroups.v1.ServiceResp.List.services:type_name -> sgroups.v1.ServiceResp.ServiceExt
-	149, // 110: sgroups.v1.ServiceResp.Watch.type:type_name -> common.WatchEventType
-	115, // 111: sgroups.v1.ServiceResp.Watch.services:type_name -> sgroups.v1.ServiceResp.ServiceExt
-	171, // 112: sgroups.v1.ServiceBindingReq.Upsert.service_bindings:type_name -> sgroups.v1.ServiceBinding
-	124, // 113: sgroups.v1.ServiceBindingReq.Delete.service_bindings:type_name -> sgroups.v1.ServiceBindingReq.Delete.ServiceBinding
-	125, // 114: sgroups.v1.ServiceBindingReq.Selectors.field_selector:type_name -> sgroups.v1.ServiceBindingReq.Selectors.FieldSelector
-	126, // 115: sgroups.v1.ServiceBindingReq.Selectors.label_selector:type_name -> sgroups.v1.ServiceBindingReq.Selectors.LabelSelectorEntry
-	121, // 116: sgroups.v1.ServiceBindingReq.List.selectors:type_name -> sgroups.v1.ServiceBindingReq.Selectors
-	121, // 117: sgroups.v1.ServiceBindingReq.Watch.selectors:type_name -> sgroups.v1.ServiceBindingReq.Selectors
-	152, // 118: sgroups.v1.ServiceBindingReq.Delete.ServiceBinding.metadata:type_name -> common.MetadataScope
-	167, // 119: sgroups.v1.ServiceBindingReq.Selectors.FieldSelector.address_group:type_name -> common.ResourceIdentifier
-	167, // 120: sgroups.v1.ServiceBindingReq.Selectors.FieldSelector.service:type_name -> common.ResourceIdentifier
-	171, // 121: sgroups.v1.ServiceBindingResp.Upsert.service_bindings:type_name -> sgroups.v1.ServiceBinding
-	171, // 122: sgroups.v1.ServiceBindingResp.List.service_bindings:type_name -> sgroups.v1.ServiceBinding
-	149, // 123: sgroups.v1.ServiceBindingResp.Watch.type:type_name -> common.WatchEventType
-	171, // 124: sgroups.v1.ServiceBindingResp.Watch.service_bindings:type_name -> sgroups.v1.ServiceBinding
-	172, // 125: sgroups.v1.RuleReq.Upsert.rules:type_name -> sgroups.v1.Rule
-	135, // 126: sgroups.v1.RuleReq.Delete.rules:type_name -> sgroups.v1.RuleReq.Delete.Rule
-	136, // 127: sgroups.v1.RuleReq.Selectors.field_selector:type_name -> sgroups.v1.RuleReq.Selectors.FieldSelector
-	137, // 128: sgroups.v1.RuleReq.Selectors.label_selector:type_name -> sgroups.v1.RuleReq.Selectors.LabelSelectorEntry
-	132, // 129: sgroups.v1.RuleReq.List.selectors:type_name -> sgroups.v1.RuleReq.Selectors
-	132, // 130: sgroups.v1.RuleReq.Watch.selectors:type_name -> sgroups.v1.RuleReq.Selectors
-	152, // 131: sgroups.v1.RuleReq.Delete.Rule.metadata:type_name -> common.MetadataScope
-	173, // 132: sgroups.v1.RuleReq.Selectors.FieldSelector.traffic:type_name -> common.Session.Traffic
-	174, // 133: sgroups.v1.RuleReq.Selectors.FieldSelector.protocol:type_name -> common.Transport.Protocol
-	175, // 134: sgroups.v1.RuleReq.Selectors.FieldSelector.endpoints:type_name -> common.Endpoints
-	172, // 135: sgroups.v1.RuleResp.Upsert.rules:type_name -> sgroups.v1.Rule
-	172, // 136: sgroups.v1.RuleResp.List.rules:type_name -> sgroups.v1.Rule
-	149, // 137: sgroups.v1.RuleResp.Watch.type:type_name -> common.WatchEventType
-	172, // 138: sgroups.v1.RuleResp.Watch.rules:type_name -> sgroups.v1.Rule
-	141, // 139: sgroups.v1.AuthnReq.BootstrapToken.metadata:type_name -> sgroups.v1.AuthnReq.Metadata
-	141, // 140: sgroups.v1.AuthnReq.SignCertificate.metadata:type_name -> sgroups.v1.AuthnReq.Metadata
-	144, // 141: sgroups.v1.AuthnReq.SignCertificate.spec:type_name -> sgroups.v1.AuthnReq.SignCertificate.Spec
-	142, // [142:142] is the sub-list for method output_type
-	142, // [142:142] is the sub-list for method input_type
-	142, // [142:142] is the sub-list for extension type_name
-	142, // [142:142] is the sub-list for extension extendee
-	0,   // [0:142] is the sub-list for field type_name
+	162, // 53: sgroups.v1.HostReq.UpdHealthStatus.Host.Spec.healthy:type_name -> sgroups.v1.Healthy
+	163, // 54: sgroups.v1.HostReq.SocketStatistics.FieldSelector.filters:type_name -> agent.v1.SockStat.Selectors
+	67,  // 55: sgroups.v1.HostReq.SocketStatistics.List.selectors:type_name -> sgroups.v1.HostReq.SocketStatistics.FieldSelector
+	67,  // 56: sgroups.v1.HostReq.SocketStatistics.Watch.selectors:type_name -> sgroups.v1.HostReq.SocketStatistics.FieldSelector
+	70,  // 57: sgroups.v1.HostReq.Nft.List.selectors:type_name -> sgroups.v1.HostReq.Nft.FieldSelector
+	70,  // 58: sgroups.v1.HostReq.Nft.Watch.selectors:type_name -> sgroups.v1.HostReq.Nft.FieldSelector
+	153, // 59: sgroups.v1.HostResp.HostExt.metadata:type_name -> common.Metadata
+	164, // 60: sgroups.v1.HostResp.HostExt.spec:type_name -> sgroups.v1.Host.Spec
+	155, // 61: sgroups.v1.HostResp.HostExt.refs:type_name -> common.ResourceRef
+	158, // 62: sgroups.v1.HostResp.Upsert.hosts:type_name -> sgroups.v1.Host
+	73,  // 63: sgroups.v1.HostResp.List.hosts:type_name -> sgroups.v1.HostResp.HostExt
+	149, // 64: sgroups.v1.HostResp.Watch.type:type_name -> common.WatchEventType
+	73,  // 65: sgroups.v1.HostResp.Watch.hosts:type_name -> sgroups.v1.HostResp.HostExt
+	158, // 66: sgroups.v1.HostResp.UpdIPs.hosts:type_name -> sgroups.v1.Host
+	158, // 67: sgroups.v1.HostResp.UpdMetaInfo.hosts:type_name -> sgroups.v1.Host
+	158, // 68: sgroups.v1.HostResp.UpdHealthStatus.hosts:type_name -> sgroups.v1.Host
+	165, // 69: sgroups.v1.HostResp.SocketStatistics.Host.stats:type_name -> agent.v1.SockStat
+	82,  // 70: sgroups.v1.HostResp.SocketStatistics.List.hosts:type_name -> sgroups.v1.HostResp.SocketStatistics.Host
+	82,  // 71: sgroups.v1.HostResp.SocketStatistics.Watch.hosts:type_name -> sgroups.v1.HostResp.SocketStatistics.Host
+	166, // 72: sgroups.v1.HostResp.Nft.Host.nft:type_name -> agent.v1.Nftables
+	85,  // 73: sgroups.v1.HostResp.Nft.List.hosts:type_name -> sgroups.v1.HostResp.Nft.Host
+	85,  // 74: sgroups.v1.HostResp.Nft.Watch.hosts:type_name -> sgroups.v1.HostResp.Nft.Host
+	167, // 75: sgroups.v1.HostBindingReq.Upsert.host_bindings:type_name -> sgroups.v1.HostBinding
+	93,  // 76: sgroups.v1.HostBindingReq.Delete.host_bindings:type_name -> sgroups.v1.HostBindingReq.Delete.HostBinding
+	94,  // 77: sgroups.v1.HostBindingReq.Selectors.field_selector:type_name -> sgroups.v1.HostBindingReq.Selectors.FieldSelector
+	95,  // 78: sgroups.v1.HostBindingReq.Selectors.label_selector:type_name -> sgroups.v1.HostBindingReq.Selectors.LabelSelectorEntry
+	90,  // 79: sgroups.v1.HostBindingReq.List.selectors:type_name -> sgroups.v1.HostBindingReq.Selectors
+	90,  // 80: sgroups.v1.HostBindingReq.Watch.selectors:type_name -> sgroups.v1.HostBindingReq.Selectors
+	152, // 81: sgroups.v1.HostBindingReq.Delete.HostBinding.metadata:type_name -> common.MetadataScope
+	168, // 82: sgroups.v1.HostBindingReq.Selectors.FieldSelector.address_group:type_name -> common.ResourceIdentifier
+	168, // 83: sgroups.v1.HostBindingReq.Selectors.FieldSelector.host:type_name -> common.ResourceIdentifier
+	167, // 84: sgroups.v1.HostBindingResp.Upsert.host_bindings:type_name -> sgroups.v1.HostBinding
+	167, // 85: sgroups.v1.HostBindingResp.List.host_bindings:type_name -> sgroups.v1.HostBinding
+	149, // 86: sgroups.v1.HostBindingResp.Watch.type:type_name -> common.WatchEventType
+	167, // 87: sgroups.v1.HostBindingResp.Watch.host_bindings:type_name -> sgroups.v1.HostBinding
+	169, // 88: sgroups.v1.NetworkBindingReq.Upsert.network_bindings:type_name -> sgroups.v1.NetworkBinding
+	104, // 89: sgroups.v1.NetworkBindingReq.Delete.network_bindings:type_name -> sgroups.v1.NetworkBindingReq.Delete.NetworkBinding
+	105, // 90: sgroups.v1.NetworkBindingReq.Selectors.field_selector:type_name -> sgroups.v1.NetworkBindingReq.Selectors.FieldSelector
+	106, // 91: sgroups.v1.NetworkBindingReq.Selectors.label_selector:type_name -> sgroups.v1.NetworkBindingReq.Selectors.LabelSelectorEntry
+	101, // 92: sgroups.v1.NetworkBindingReq.List.selectors:type_name -> sgroups.v1.NetworkBindingReq.Selectors
+	101, // 93: sgroups.v1.NetworkBindingReq.Watch.selectors:type_name -> sgroups.v1.NetworkBindingReq.Selectors
+	152, // 94: sgroups.v1.NetworkBindingReq.Delete.NetworkBinding.metadata:type_name -> common.MetadataScope
+	168, // 95: sgroups.v1.NetworkBindingReq.Selectors.FieldSelector.address_group:type_name -> common.ResourceIdentifier
+	168, // 96: sgroups.v1.NetworkBindingReq.Selectors.FieldSelector.network:type_name -> common.ResourceIdentifier
+	169, // 97: sgroups.v1.NetworkBindingResp.Upsert.network_bindings:type_name -> sgroups.v1.NetworkBinding
+	169, // 98: sgroups.v1.NetworkBindingResp.List.network_bindings:type_name -> sgroups.v1.NetworkBinding
+	149, // 99: sgroups.v1.NetworkBindingResp.Watch.type:type_name -> common.WatchEventType
+	169, // 100: sgroups.v1.NetworkBindingResp.Watch.network_bindings:type_name -> sgroups.v1.NetworkBinding
+	170, // 101: sgroups.v1.ServiceReq.Upsert.services:type_name -> sgroups.v1.Service
+	114, // 102: sgroups.v1.ServiceReq.Delete.services:type_name -> sgroups.v1.ServiceReq.Delete.Service
+	151, // 103: sgroups.v1.ServiceReq.List.selectors:type_name -> common.ResSelector
+	151, // 104: sgroups.v1.ServiceReq.Watch.selectors:type_name -> common.ResSelector
+	152, // 105: sgroups.v1.ServiceReq.Delete.Service.metadata:type_name -> common.MetadataScope
+	153, // 106: sgroups.v1.ServiceResp.ServiceExt.metadata:type_name -> common.Metadata
+	171, // 107: sgroups.v1.ServiceResp.ServiceExt.spec:type_name -> sgroups.v1.Service.Spec
+	155, // 108: sgroups.v1.ServiceResp.ServiceExt.refs:type_name -> common.ResourceRef
+	170, // 109: sgroups.v1.ServiceResp.Upsert.services:type_name -> sgroups.v1.Service
+	115, // 110: sgroups.v1.ServiceResp.List.services:type_name -> sgroups.v1.ServiceResp.ServiceExt
+	149, // 111: sgroups.v1.ServiceResp.Watch.type:type_name -> common.WatchEventType
+	115, // 112: sgroups.v1.ServiceResp.Watch.services:type_name -> sgroups.v1.ServiceResp.ServiceExt
+	172, // 113: sgroups.v1.ServiceBindingReq.Upsert.service_bindings:type_name -> sgroups.v1.ServiceBinding
+	124, // 114: sgroups.v1.ServiceBindingReq.Delete.service_bindings:type_name -> sgroups.v1.ServiceBindingReq.Delete.ServiceBinding
+	125, // 115: sgroups.v1.ServiceBindingReq.Selectors.field_selector:type_name -> sgroups.v1.ServiceBindingReq.Selectors.FieldSelector
+	126, // 116: sgroups.v1.ServiceBindingReq.Selectors.label_selector:type_name -> sgroups.v1.ServiceBindingReq.Selectors.LabelSelectorEntry
+	121, // 117: sgroups.v1.ServiceBindingReq.List.selectors:type_name -> sgroups.v1.ServiceBindingReq.Selectors
+	121, // 118: sgroups.v1.ServiceBindingReq.Watch.selectors:type_name -> sgroups.v1.ServiceBindingReq.Selectors
+	152, // 119: sgroups.v1.ServiceBindingReq.Delete.ServiceBinding.metadata:type_name -> common.MetadataScope
+	168, // 120: sgroups.v1.ServiceBindingReq.Selectors.FieldSelector.address_group:type_name -> common.ResourceIdentifier
+	168, // 121: sgroups.v1.ServiceBindingReq.Selectors.FieldSelector.service:type_name -> common.ResourceIdentifier
+	172, // 122: sgroups.v1.ServiceBindingResp.Upsert.service_bindings:type_name -> sgroups.v1.ServiceBinding
+	172, // 123: sgroups.v1.ServiceBindingResp.List.service_bindings:type_name -> sgroups.v1.ServiceBinding
+	149, // 124: sgroups.v1.ServiceBindingResp.Watch.type:type_name -> common.WatchEventType
+	172, // 125: sgroups.v1.ServiceBindingResp.Watch.service_bindings:type_name -> sgroups.v1.ServiceBinding
+	173, // 126: sgroups.v1.RuleReq.Upsert.rules:type_name -> sgroups.v1.Rule
+	135, // 127: sgroups.v1.RuleReq.Delete.rules:type_name -> sgroups.v1.RuleReq.Delete.Rule
+	136, // 128: sgroups.v1.RuleReq.Selectors.field_selector:type_name -> sgroups.v1.RuleReq.Selectors.FieldSelector
+	137, // 129: sgroups.v1.RuleReq.Selectors.label_selector:type_name -> sgroups.v1.RuleReq.Selectors.LabelSelectorEntry
+	132, // 130: sgroups.v1.RuleReq.List.selectors:type_name -> sgroups.v1.RuleReq.Selectors
+	132, // 131: sgroups.v1.RuleReq.Watch.selectors:type_name -> sgroups.v1.RuleReq.Selectors
+	152, // 132: sgroups.v1.RuleReq.Delete.Rule.metadata:type_name -> common.MetadataScope
+	174, // 133: sgroups.v1.RuleReq.Selectors.FieldSelector.traffic:type_name -> common.Session.Traffic
+	175, // 134: sgroups.v1.RuleReq.Selectors.FieldSelector.protocol:type_name -> common.Transport.Protocol
+	176, // 135: sgroups.v1.RuleReq.Selectors.FieldSelector.endpoints:type_name -> common.Endpoints
+	173, // 136: sgroups.v1.RuleResp.Upsert.rules:type_name -> sgroups.v1.Rule
+	173, // 137: sgroups.v1.RuleResp.List.rules:type_name -> sgroups.v1.Rule
+	149, // 138: sgroups.v1.RuleResp.Watch.type:type_name -> common.WatchEventType
+	173, // 139: sgroups.v1.RuleResp.Watch.rules:type_name -> sgroups.v1.Rule
+	141, // 140: sgroups.v1.AuthnReq.BootstrapToken.metadata:type_name -> sgroups.v1.AuthnReq.Metadata
+	141, // 141: sgroups.v1.AuthnReq.SignCertificate.metadata:type_name -> sgroups.v1.AuthnReq.Metadata
+	144, // 142: sgroups.v1.AuthnReq.SignCertificate.spec:type_name -> sgroups.v1.AuthnReq.SignCertificate.Spec
+	143, // [143:143] is the sub-list for method output_type
+	143, // [143:143] is the sub-list for method input_type
+	143, // [143:143] is the sub-list for extension type_name
+	143, // [143:143] is the sub-list for extension extendee
+	0,   // [0:143] is the sub-list for field type_name
 }
 
 func init() { file_sgroups_v1_queries_proto_init() }

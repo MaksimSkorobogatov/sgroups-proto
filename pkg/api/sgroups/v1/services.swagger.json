@@ -1945,7 +1945,7 @@
       "type": "object",
       "properties": {
         "healthy": {
-          "type": "boolean",
+          "$ref": "#/definitions/v1Healthy",
           "title": "Healthy: whether the host is healthy"
         }
       },
@@ -2665,7 +2665,7 @@
           "readOnly": true
         },
         "healthy": {
-          "type": "boolean",
+          "$ref": "#/definitions/v1Healthy",
           "title": "Healthy: health check status (output-only, populated by healthcheck controller)",
           "readOnly": true
         }
@@ -2987,6 +2987,16 @@
       "default": "CONN_UNDEF",
       "description": "- CONN_UNDEF: CONN_UNDEF: undefined connection state\n - ESTABLISHED: ESTABLISHED: connection is established\n - SYN_SENT: SYN_SENT: connection is in SYN_SENT state\n - SYN_RECV: SYN_RECV: connection is in SYN_RECV state\n - FIN_WAIT1: FIN_WAIT1: connection is in FIN_WAIT1 state\n - FIN_WAIT2: FIN_WAIT2: connection is in FIN_WAIT2 state\n - TIME_WAIT: TIME_WAIT: connection is in TIME_WAIT state\n - CLOSE: CLOSE: connection is closed\n - CLOSE_WAIT: CLOSE_WAIT: connection is in CLOSE_WAIT state\n - LAST_ACK: LAST_ACK: connection is in LAST_ACK state\n - LISTEN: LISTEN: connection is in LISTEN state\n - CLOSING: CLOSING: connection is in CLOSING state\n - NEW_SYN_RECV: NEW_SYN_RECV: connection is in NEW_SYN_RECV state",
       "title": "ConnState: represents connection state"
+    },
+    "v1Healthy": {
+      "type": "string",
+      "enum": [
+        "HEALTHY_UNDEFINED",
+        "HEALTHY_TRUE",
+        "HEALTHY_FALSE"
+      ],
+      "default": "HEALTHY_UNDEFINED",
+      "description": "Healthy: host health check status reported by the healthcheck controller.\nThe DB stores it as a boolean; HEALTHY_UNDEFINED maps to false there.\n\n - HEALTHY_UNDEFINED: HEALTHY_UNDEFINED: health status is unknown / not yet probed.\n - HEALTHY_TRUE: HEALTHY_TRUE: host is healthy.\n - HEALTHY_FALSE: HEALTHY_FALSE: host is unhealthy."
     },
     "v1HostBindingReqDelete": {
       "type": "object",

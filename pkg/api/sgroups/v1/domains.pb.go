@@ -25,6 +25,60 @@ const (
 	_ = protoimpl.EnforceVersion(protoimpl.MaxVersion - 20)
 )
 
+// Healthy: host health check status reported by the healthcheck controller.
+// The DB stores it as a boolean; HEALTHY_UNDEFINED maps to false there.
+type Healthy int32
+
+const (
+	// HEALTHY_UNDEFINED: health status is unknown / not yet probed.
+	Healthy_HEALTHY_UNDEFINED Healthy = 0
+	// HEALTHY_TRUE: host is healthy.
+	Healthy_HEALTHY_TRUE Healthy = 1
+	// HEALTHY_FALSE: host is unhealthy.
+	Healthy_HEALTHY_FALSE Healthy = 2
+)
+
+// Enum value maps for Healthy.
+var (
+	Healthy_name = map[int32]string{
+		0: "HEALTHY_UNDEFINED",
+		1: "HEALTHY_TRUE",
+		2: "HEALTHY_FALSE",
+	}
+	Healthy_value = map[string]int32{
+		"HEALTHY_UNDEFINED": 0,
+		"HEALTHY_TRUE":      1,
+		"HEALTHY_FALSE":     2,
+	}
+)
+
+func (x Healthy) Enum() *Healthy {
+	p := new(Healthy)
+	*p = x
+	return p
+}
+
+func (x Healthy) String() string {
+	return protoimpl.X.EnumStringOf(x.Descriptor(), protoreflect.EnumNumber(x))
+}
+
+func (Healthy) Descriptor() protoreflect.EnumDescriptor {
+	return file_sgroups_v1_domains_proto_enumTypes[0].Descriptor()
+}
+
+func (Healthy) Type() protoreflect.EnumType {
+	return &file_sgroups_v1_domains_proto_enumTypes[0]
+}
+
+func (x Healthy) Number() protoreflect.EnumNumber {
+	return protoreflect.EnumNumber(x)
+}
+
+// Deprecated: Use Healthy.Descriptor instead.
+func (Healthy) EnumDescriptor() ([]byte, []int) {
+	return file_sgroups_v1_domains_proto_rawDescGZIP(), []int{0}
+}
+
 // Namespace: represents namespace resource
 type Namespace struct {
 	state protoimpl.MessageState `protogen:"open.v1"`
@@ -764,7 +818,7 @@ type Host_Spec struct {
 	// Endpoints: endpoints published by the host
 	Endpoints *Host_Spec_Endpoints `protobuf:"bytes,6,opt,name=endpoints,proto3" json:"endpoints,omitempty"`
 	// Healthy: health check status (output-only, populated by healthcheck controller)
-	Healthy       bool `protobuf:"varint,7,opt,name=healthy,proto3" json:"healthy,omitempty"`
+	Healthy       Healthy `protobuf:"varint,7,opt,name=healthy,proto3,enum=sgroups.v1.Healthy" json:"healthy,omitempty"`
 	unknownFields protoimpl.UnknownFields
 	sizeCache     protoimpl.SizeCache
 }
@@ -841,11 +895,11 @@ func (x *Host_Spec) GetEndpoints() *Host_Spec_Endpoints {
 	return nil
 }
 
-func (x *Host_Spec) GetHealthy() bool {
+func (x *Host_Spec) GetHealthy() Healthy {
 	if x != nil {
 		return x.Healthy
 	}
-	return false
+	return Healthy_HEALTHY_UNDEFINED
 }
 
 // MetaInfo: represents host meta information
@@ -1499,18 +1553,18 @@ const file_sgroups_v1_domains_proto_rawDesc = "" +
 	"\fdisplay_name\x18\x01 \x01(\tB\a\xbaH\x04r\x02\x18?R\vdisplayName\x12\x18\n" +
 	"\acomment\x18\x02 \x01(\tR\acomment\x12 \n" +
 	"\vdescription\x18\x03 \x01(\tR\vdescription\x12\x8d\x01\n" +
-	"\x04cidr\x18\x04 \x01(\tBy\xbaHv\xba\x01F\x12/must not contain leading or trailing whitespace\x1a\x13this == this.trim()\xba\x01&\x12\x10must contain '/'\x1a\x12this.contains('/')r\x02\x10\x01R\x04CIDR\"\xb8\x06\n" +
+	"\x04cidr\x18\x04 \x01(\tBy\xbaHv\xba\x01F\x12/must not contain leading or trailing whitespace\x1a\x13this == this.trim()\xba\x01&\x12\x10must contain '/'\x1a\x12this.contains('/')r\x02\x10\x01R\x04CIDR\"\xcd\x06\n" +
 	"\x04Host\x124\n" +
 	"\bmetadata\x18\x01 \x01(\v2\x10.common.MetadataB\x06\xbaH\x03\xc8\x01\x01R\bmetadata\x121\n" +
-	"\x04spec\x18\x02 \x01(\v2\x15.sgroups.v1.Host.SpecB\x06\xbaH\x03\xc8\x01\x01R\x04spec\x1a\xc6\x05\n" +
+	"\x04spec\x18\x02 \x01(\v2\x15.sgroups.v1.Host.SpecB\x06\xbaH\x03\xc8\x01\x01R\x04spec\x1a\xdb\x05\n" +
 	"\x04Spec\x12*\n" +
 	"\fdisplay_name\x18\x01 \x01(\tB\a\xbaH\x04r\x02\x18?R\vdisplayName\x12\x18\n" +
 	"\acomment\x18\x02 \x01(\tR\acomment\x12 \n" +
 	"\vdescription\x18\x03 \x01(\tR\vdescription\x12'\n" +
 	"\x03ips\x18\x04 \x01(\v2\v.common.IPsB\b\x92A\x02@\x01\xe0A\x03R\x03IPs\x12E\n" +
 	"\tmeta_info\x18\x05 \x01(\v2\x1e.sgroups.v1.Host.Spec.MetaInfoB\b\x92A\x02@\x01\xe0A\x03R\bmetaInfo\x12G\n" +
-	"\tendpoints\x18\x06 \x01(\v2\x1f.sgroups.v1.Host.Spec.EndpointsB\b\x92A\x02@\x01\xe0A\x03R\tendpoints\x12\"\n" +
-	"\ahealthy\x18\a \x01(\bB\b\x92A\x02@\x01\xe0A\x03R\ahealthy\x1a\xce\x01\n" +
+	"\tendpoints\x18\x06 \x01(\v2\x1f.sgroups.v1.Host.Spec.EndpointsB\b\x92A\x02@\x01\xe0A\x03R\tendpoints\x127\n" +
+	"\ahealthy\x18\a \x01(\x0e2\x13.sgroups.v1.HealthyB\b\x92A\x02@\x01\xe0A\x03R\ahealthy\x1a\xce\x01\n" +
 	"\bMetaInfo\x12\x1b\n" +
 	"\thost_name\x18\x01 \x01(\tR\bhostName\x12\x0e\n" +
 	"\x02os\x18\x02 \x01(\tR\x02os\x12\x1a\n" +
@@ -1571,7 +1625,11 @@ const file_sgroups_v1_domains_proto_rawDesc = "" +
 	"\x06action\x18\x04 \x01(\x0e2\x0e.common.ActionB\b\xbaH\x05\x82\x01\x02 \x00R\x06action\x12)\n" +
 	"\asession\x18\x05 \x01(\v2\x0f.common.SessionR\asession\x12/\n" +
 	"\tendpoints\x18\x06 \x01(\v2\x11.common.EndpointsR\tendpoints\x12/\n" +
-	"\ttransport\x18\a \x01(\v2\x11.common.TransportR\ttransportBDZBgithub.com/PRO-Robotech/sgroups-proto/pkg/api/sgroups/v1;sgroupsv1b\x06proto3"
+	"\ttransport\x18\a \x01(\v2\x11.common.TransportR\ttransport*E\n" +
+	"\aHealthy\x12\x15\n" +
+	"\x11HEALTHY_UNDEFINED\x10\x00\x12\x10\n" +
+	"\fHEALTHY_TRUE\x10\x01\x12\x11\n" +
+	"\rHEALTHY_FALSE\x10\x02BDZBgithub.com/PRO-Robotech/sgroups-proto/pkg/api/sgroups/v1;sgroupsv1b\x06proto3"
 
 var (
 	file_sgroups_v1_domains_proto_rawDescOnce sync.Once
@@ -1585,77 +1643,80 @@ func file_sgroups_v1_domains_proto_rawDescGZIP() []byte {
 	return file_sgroups_v1_domains_proto_rawDescData
 }
 
+var file_sgroups_v1_domains_proto_enumTypes = make([]protoimpl.EnumInfo, 1)
 var file_sgroups_v1_domains_proto_msgTypes = make([]protoimpl.MessageInfo, 21)
 var file_sgroups_v1_domains_proto_goTypes = []any{
-	(*Namespace)(nil),                 // 0: sgroups.v1.Namespace
-	(*AddressGroup)(nil),              // 1: sgroups.v1.AddressGroup
-	(*Network)(nil),                   // 2: sgroups.v1.Network
-	(*Host)(nil),                      // 3: sgroups.v1.Host
-	(*HostBinding)(nil),               // 4: sgroups.v1.HostBinding
-	(*NetworkBinding)(nil),            // 5: sgroups.v1.NetworkBinding
-	(*Service)(nil),                   // 6: sgroups.v1.Service
-	(*ServiceBinding)(nil),            // 7: sgroups.v1.ServiceBinding
-	(*Rule)(nil),                      // 8: sgroups.v1.Rule
-	(*Namespace_Spec)(nil),            // 9: sgroups.v1.Namespace.Spec
-	(*AddressGroup_Spec)(nil),         // 10: sgroups.v1.AddressGroup.Spec
-	(*Network_Spec)(nil),              // 11: sgroups.v1.Network.Spec
-	(*Host_Spec)(nil),                 // 12: sgroups.v1.Host.Spec
-	(*Host_Spec_MetaInfo)(nil),        // 13: sgroups.v1.Host.Spec.MetaInfo
-	(*Host_Spec_Endpoints)(nil),       // 14: sgroups.v1.Host.Spec.Endpoints
-	(*Host_Spec_Endpoints_Port)(nil),  // 15: sgroups.v1.Host.Spec.Endpoints.Port
-	(*HostBinding_Spec)(nil),          // 16: sgroups.v1.HostBinding.Spec
-	(*NetworkBinding_Spec)(nil),       // 17: sgroups.v1.NetworkBinding.Spec
-	(*Service_Spec)(nil),              // 18: sgroups.v1.Service.Spec
-	(*ServiceBinding_Spec)(nil),       // 19: sgroups.v1.ServiceBinding.Spec
-	(*Rule_Spec)(nil),                 // 20: sgroups.v1.Rule.Spec
-	(*common.Metadata)(nil),           // 21: common.Metadata
-	(common.Action)(0),                // 22: common.Action
-	(*common.IPs)(nil),                // 23: common.IPs
-	(*common.ResourceIdentifier)(nil), // 24: common.ResourceIdentifier
-	(*common.Transport)(nil),          // 25: common.Transport
-	(*common.Session)(nil),            // 26: common.Session
-	(*common.Endpoints)(nil),          // 27: common.Endpoints
+	(Healthy)(0),                      // 0: sgroups.v1.Healthy
+	(*Namespace)(nil),                 // 1: sgroups.v1.Namespace
+	(*AddressGroup)(nil),              // 2: sgroups.v1.AddressGroup
+	(*Network)(nil),                   // 3: sgroups.v1.Network
+	(*Host)(nil),                      // 4: sgroups.v1.Host
+	(*HostBinding)(nil),               // 5: sgroups.v1.HostBinding
+	(*NetworkBinding)(nil),            // 6: sgroups.v1.NetworkBinding
+	(*Service)(nil),                   // 7: sgroups.v1.Service
+	(*ServiceBinding)(nil),            // 8: sgroups.v1.ServiceBinding
+	(*Rule)(nil),                      // 9: sgroups.v1.Rule
+	(*Namespace_Spec)(nil),            // 10: sgroups.v1.Namespace.Spec
+	(*AddressGroup_Spec)(nil),         // 11: sgroups.v1.AddressGroup.Spec
+	(*Network_Spec)(nil),              // 12: sgroups.v1.Network.Spec
+	(*Host_Spec)(nil),                 // 13: sgroups.v1.Host.Spec
+	(*Host_Spec_MetaInfo)(nil),        // 14: sgroups.v1.Host.Spec.MetaInfo
+	(*Host_Spec_Endpoints)(nil),       // 15: sgroups.v1.Host.Spec.Endpoints
+	(*Host_Spec_Endpoints_Port)(nil),  // 16: sgroups.v1.Host.Spec.Endpoints.Port
+	(*HostBinding_Spec)(nil),          // 17: sgroups.v1.HostBinding.Spec
+	(*NetworkBinding_Spec)(nil),       // 18: sgroups.v1.NetworkBinding.Spec
+	(*Service_Spec)(nil),              // 19: sgroups.v1.Service.Spec
+	(*ServiceBinding_Spec)(nil),       // 20: sgroups.v1.ServiceBinding.Spec
+	(*Rule_Spec)(nil),                 // 21: sgroups.v1.Rule.Spec
+	(*common.Metadata)(nil),           // 22: common.Metadata
+	(common.Action)(0),                // 23: common.Action
+	(*common.IPs)(nil),                // 24: common.IPs
+	(*common.ResourceIdentifier)(nil), // 25: common.ResourceIdentifier
+	(*common.Transport)(nil),          // 26: common.Transport
+	(*common.Session)(nil),            // 27: common.Session
+	(*common.Endpoints)(nil),          // 28: common.Endpoints
 }
 var file_sgroups_v1_domains_proto_depIdxs = []int32{
-	21, // 0: sgroups.v1.Namespace.metadata:type_name -> common.Metadata
-	9,  // 1: sgroups.v1.Namespace.spec:type_name -> sgroups.v1.Namespace.Spec
-	21, // 2: sgroups.v1.AddressGroup.metadata:type_name -> common.Metadata
-	10, // 3: sgroups.v1.AddressGroup.spec:type_name -> sgroups.v1.AddressGroup.Spec
-	21, // 4: sgroups.v1.Network.metadata:type_name -> common.Metadata
-	11, // 5: sgroups.v1.Network.spec:type_name -> sgroups.v1.Network.Spec
-	21, // 6: sgroups.v1.Host.metadata:type_name -> common.Metadata
-	12, // 7: sgroups.v1.Host.spec:type_name -> sgroups.v1.Host.Spec
-	21, // 8: sgroups.v1.HostBinding.metadata:type_name -> common.Metadata
-	16, // 9: sgroups.v1.HostBinding.spec:type_name -> sgroups.v1.HostBinding.Spec
-	21, // 10: sgroups.v1.NetworkBinding.metadata:type_name -> common.Metadata
-	17, // 11: sgroups.v1.NetworkBinding.spec:type_name -> sgroups.v1.NetworkBinding.Spec
-	21, // 12: sgroups.v1.Service.metadata:type_name -> common.Metadata
-	18, // 13: sgroups.v1.Service.spec:type_name -> sgroups.v1.Service.Spec
-	21, // 14: sgroups.v1.ServiceBinding.metadata:type_name -> common.Metadata
-	19, // 15: sgroups.v1.ServiceBinding.spec:type_name -> sgroups.v1.ServiceBinding.Spec
-	21, // 16: sgroups.v1.Rule.metadata:type_name -> common.Metadata
-	20, // 17: sgroups.v1.Rule.spec:type_name -> sgroups.v1.Rule.Spec
-	22, // 18: sgroups.v1.AddressGroup.Spec.default_action:type_name -> common.Action
-	23, // 19: sgroups.v1.Host.Spec.ips:type_name -> common.IPs
-	13, // 20: sgroups.v1.Host.Spec.meta_info:type_name -> sgroups.v1.Host.Spec.MetaInfo
-	14, // 21: sgroups.v1.Host.Spec.endpoints:type_name -> sgroups.v1.Host.Spec.Endpoints
-	15, // 22: sgroups.v1.Host.Spec.Endpoints.ports:type_name -> sgroups.v1.Host.Spec.Endpoints.Port
-	24, // 23: sgroups.v1.HostBinding.Spec.address_group:type_name -> common.ResourceIdentifier
-	24, // 24: sgroups.v1.HostBinding.Spec.host:type_name -> common.ResourceIdentifier
-	24, // 25: sgroups.v1.NetworkBinding.Spec.address_group:type_name -> common.ResourceIdentifier
-	24, // 26: sgroups.v1.NetworkBinding.Spec.network:type_name -> common.ResourceIdentifier
-	25, // 27: sgroups.v1.Service.Spec.transports:type_name -> common.Transport
-	24, // 28: sgroups.v1.ServiceBinding.Spec.address_group:type_name -> common.ResourceIdentifier
-	24, // 29: sgroups.v1.ServiceBinding.Spec.service:type_name -> common.ResourceIdentifier
-	22, // 30: sgroups.v1.Rule.Spec.action:type_name -> common.Action
-	26, // 31: sgroups.v1.Rule.Spec.session:type_name -> common.Session
-	27, // 32: sgroups.v1.Rule.Spec.endpoints:type_name -> common.Endpoints
-	25, // 33: sgroups.v1.Rule.Spec.transport:type_name -> common.Transport
-	34, // [34:34] is the sub-list for method output_type
-	34, // [34:34] is the sub-list for method input_type
-	34, // [34:34] is the sub-list for extension type_name
-	34, // [34:34] is the sub-list for extension extendee
-	0,  // [0:34] is the sub-list for field type_name
+	22, // 0: sgroups.v1.Namespace.metadata:type_name -> common.Metadata
+	10, // 1: sgroups.v1.Namespace.spec:type_name -> sgroups.v1.Namespace.Spec
+	22, // 2: sgroups.v1.AddressGroup.metadata:type_name -> common.Metadata
+	11, // 3: sgroups.v1.AddressGroup.spec:type_name -> sgroups.v1.AddressGroup.Spec
+	22, // 4: sgroups.v1.Network.metadata:type_name -> common.Metadata
+	12, // 5: sgroups.v1.Network.spec:type_name -> sgroups.v1.Network.Spec
+	22, // 6: sgroups.v1.Host.metadata:type_name -> common.Metadata
+	13, // 7: sgroups.v1.Host.spec:type_name -> sgroups.v1.Host.Spec
+	22, // 8: sgroups.v1.HostBinding.metadata:type_name -> common.Metadata
+	17, // 9: sgroups.v1.HostBinding.spec:type_name -> sgroups.v1.HostBinding.Spec
+	22, // 10: sgroups.v1.NetworkBinding.metadata:type_name -> common.Metadata
+	18, // 11: sgroups.v1.NetworkBinding.spec:type_name -> sgroups.v1.NetworkBinding.Spec
+	22, // 12: sgroups.v1.Service.metadata:type_name -> common.Metadata
+	19, // 13: sgroups.v1.Service.spec:type_name -> sgroups.v1.Service.Spec
+	22, // 14: sgroups.v1.ServiceBinding.metadata:type_name -> common.Metadata
+	20, // 15: sgroups.v1.ServiceBinding.spec:type_name -> sgroups.v1.ServiceBinding.Spec
+	22, // 16: sgroups.v1.Rule.metadata:type_name -> common.Metadata
+	21, // 17: sgroups.v1.Rule.spec:type_name -> sgroups.v1.Rule.Spec
+	23, // 18: sgroups.v1.AddressGroup.Spec.default_action:type_name -> common.Action
+	24, // 19: sgroups.v1.Host.Spec.ips:type_name -> common.IPs
+	14, // 20: sgroups.v1.Host.Spec.meta_info:type_name -> sgroups.v1.Host.Spec.MetaInfo
+	15, // 21: sgroups.v1.Host.Spec.endpoints:type_name -> sgroups.v1.Host.Spec.Endpoints
+	0,  // 22: sgroups.v1.Host.Spec.healthy:type_name -> sgroups.v1.Healthy
+	16, // 23: sgroups.v1.Host.Spec.Endpoints.ports:type_name -> sgroups.v1.Host.Spec.Endpoints.Port
+	25, // 24: sgroups.v1.HostBinding.Spec.address_group:type_name -> common.ResourceIdentifier
+	25, // 25: sgroups.v1.HostBinding.Spec.host:type_name -> common.ResourceIdentifier
+	25, // 26: sgroups.v1.NetworkBinding.Spec.address_group:type_name -> common.ResourceIdentifier
+	25, // 27: sgroups.v1.NetworkBinding.Spec.network:type_name -> common.ResourceIdentifier
+	26, // 28: sgroups.v1.Service.Spec.transports:type_name -> common.Transport
+	25, // 29: sgroups.v1.ServiceBinding.Spec.address_group:type_name -> common.ResourceIdentifier
+	25, // 30: sgroups.v1.ServiceBinding.Spec.service:type_name -> common.ResourceIdentifier
+	23, // 31: sgroups.v1.Rule.Spec.action:type_name -> common.Action
+	27, // 32: sgroups.v1.Rule.Spec.session:type_name -> common.Session
+	28, // 33: sgroups.v1.Rule.Spec.endpoints:type_name -> common.Endpoints
+	26, // 34: sgroups.v1.Rule.Spec.transport:type_name -> common.Transport
+	35, // [35:35] is the sub-list for method output_type
+	35, // [35:35] is the sub-list for method input_type
+	35, // [35:35] is the sub-list for extension type_name
+	35, // [35:35] is the sub-list for extension extendee
+	0,  // [0:35] is the sub-list for field type_name
 }
 
 func init() { file_sgroups_v1_domains_proto_init() }
@@ -1668,13 +1729,14 @@ func file_sgroups_v1_domains_proto_init() {
 		File: protoimpl.DescBuilder{
 			GoPackagePath: reflect.TypeOf(x{}).PkgPath(),
 			RawDescriptor: unsafe.Slice(unsafe.StringData(file_sgroups_v1_domains_proto_rawDesc), len(file_sgroups_v1_domains_proto_rawDesc)),
-			NumEnums:      0,
+			NumEnums:      1,
 			NumMessages:   21,
 			NumExtensions: 0,
 			NumServices:   0,
 		},
 		GoTypes:           file_sgroups_v1_domains_proto_goTypes,
 		DependencyIndexes: file_sgroups_v1_domains_proto_depIdxs,
+		EnumInfos:         file_sgroups_v1_domains_proto_enumTypes,
 		MessageInfos:      file_sgroups_v1_domains_proto_msgTypes,
 	}.Build()
 	File_sgroups_v1_domains_proto = out.File

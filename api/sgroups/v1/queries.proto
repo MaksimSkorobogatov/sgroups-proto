@@ -377,7 +377,7 @@ message HostReq {
       // Spec: host specification for health status update
       message Spec {
         // Healthy: whether the host is healthy
-        bool healthy = 1;
+        Healthy healthy = 1;
       }
       // Spec: host specification for health status update
       Spec spec = 2 [(buf.validate.field) = {required: true}];
